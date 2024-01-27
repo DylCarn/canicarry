@@ -5,7 +5,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
-import LogOut from './pages/LogOut';
+import LocationServices from './pages/LocationServices';
 
 function App() {
     return (
@@ -14,7 +14,7 @@ function App() {
         <Header />
         <Routes>
         <Route path='/' element={<Login />}></Route>
-        <Route path='/logout' element={<LogOut />}></Route>
+        <Route path='/LocationServices' element={<LocationServices />}></Route>
         </Routes>
         <Footer />
         </Router>
