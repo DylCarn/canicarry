@@ -19,12 +19,13 @@ const LocationServices = () => {
   useEffect(() => {
     // Redirect if location is already enabled
     if (locationEnabled) {
-      navigate('/next-page'); // Replace with your intended route
+      navigate('/disclaimer'); // Replace with your intended route
     }
   }, [locationEnabled, navigate]);
 
   const handleEnableLocation = () => {
     // Logic to request location permission and enable location services
+    navigate('/disclaimer'); // Navigate to Disclaimer page after enabling location
   };
 
   // Do not display the page if location is already enabled

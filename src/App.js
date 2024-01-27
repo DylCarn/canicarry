@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import LocationServices from './pages/LocationServices';
 import SignUp from './pages/SignUp';
 import Disclaimer from './pages/Disclaimer';
+import Main from './pages/Main';
 
 function App() {
 
@@ -20,7 +21,8 @@ function App() {
                     <Route path='/' element={<Login />} />
                     <Route path="/SignUp" element={<SignUp />} />
                     <Route path='/LocationServices' element={<LocationServices />} />
-                    <Route path='/disclaimer' element={<Disclaimer />} />
+                    <Route path='/Disclaimer' element={<Disclaimer />} />
+                    <Route path="/Main" element={<Main />} />
                 </Routes>
                 <Footer />
             </Router>

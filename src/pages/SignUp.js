@@ -19,8 +19,9 @@ const SignUp = () => {
         
         // Handle the sign-up logic here
         console.log("Sign up form submitted");
-        // After sign up, redirect the user to the login page or home page
-        navigate('/login'); // Replace with the path you want to redirect to after sign up
+
+        // After sign up, redirect the user to the location services page
+        navigate('/LocationServices'); 
     };
 
     return (

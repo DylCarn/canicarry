@@ -66,17 +66,17 @@ const Disclaimer = () => {
             We reserve the right to update or modify this disclaimer at any time without prior notice. Any changes will be effective immediately upon posting on the app. Users are encouraged to review this disclaimer regularly for updates.
           </p>
           <div className="mb-3">
-            <Link to="/agree" className="btn btn-primary w-100">
-              Agree
-            </Link>
-          </div>
+          <Link to="/main" className="btn btn-primary w-100">
+               Agree
+          </Link>
+         </div>
           <div className="mb-3">
-            <Link to="/disagree" className="btn btn-secondary w-100">
-              Disagree
-            </Link>
+           <button className="btn btn-secondary w-100" onClick={(e) => e.preventDefault()}>
+               Disagree
+           </button>
+           </div>
           </div>
         </div>
-      </div>
     </div>
   );
 };
