@@ -36,7 +36,7 @@ const LocationServices = () => {
       <div className="text-center p-4 bg-white border rounded shadow-sm">
         <h2 className="mb-3">Enable Location</h2>
         <p className="mb-3">Our app works better with location services turned on.</p>
-        <p className="mb-4">You can adjust your location settings at any time.</p>
+        <p className="mb-3">You can adjust your location settings at any time.</p>
         <button className="btn btn-danger" onClick={handleEnableLocation}>OK, I understand</button>
       </div>
     </div>

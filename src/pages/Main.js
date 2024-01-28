@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import GoogleMapReact from 'google-map-react';
 
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
 const Main = () => {
     const [businesses, setBusinesses] = useState([]);
 
+    //set variable with information returned from PostMan
+
+
+ /*
     useEffect(() => {
         // Fetch businesses data from API or database
         // and update the 'businesses' state
@@ -32,25 +35,17 @@ const Main = () => {
         ];
         setBusinesses(fetchedBusinesses);
     };
-
+*/
     return (
         <div style={{ height: '100vh', width: '100%' }}>
             <GoogleMapReact
-                bootstrapURLKeys={{ key: 'AIzaSyCmDX_bSdKtCuWC-KPOUsqQ1v7YKBf1bqg' }}
-                defaultCenter={{ lat: 37.7749, lng: -122.4194 }}
-                defaultZoom={10}
-            >
-                {businesses.map((business) => (
-                    <AnyReactComponent
-                        key={business.id}
-                        lat={business.location.lat}
-                        lng={business.location.lng}
-                        text={business.name}
-                    />
-                ))}
-            </GoogleMapReact>
+                bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
+                defaultCenter={{ lat: 38.884, lng: -94.874}}
+                defaultZoom={15}
+                // Add Marker for map..
+            />
         </div>
     );
 };
-
+//
 export default Main;
