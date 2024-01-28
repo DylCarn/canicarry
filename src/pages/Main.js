@@ -1,7 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import GoogleMapReact from 'google-map-react';
 
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
+const AnyReactComponent = () => <div style={{
+    color: 'white', 
+    background: 'red',
+    padding: '15px 10px',
+    display: 'inline-flex',
+    textAlign: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: '100%', 
+    transform: 'translate(-50%, -50%)'
+}}>My Marker</div>
 
 let map, maps;
 
@@ -39,8 +49,8 @@ const Main = () => {
                 onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
             >
                 <AnyReactComponent
-                    lat={59.955413}
-                    lng={30.337844}
+                    lat={38.884}
+                    lng={-94.874}
                     text="My Marker"
                 />
             </GoogleMapReact>
