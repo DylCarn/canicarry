@@ -1,113 +1,90 @@
-import React, { useEffect } from 'react';
-import GoogleMapReact from 'google-map-react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
+import { GoogleMap, useLoadScript, MarkerF, LoadScript, InfoWindowF } from '@react-google-maps/api';
+import '../App.css';
 
-let map, maps;
 
-const handleApiLoaded = (mapLoaded, mapsLoaded) => {
-  map = mapLoaded;
-  maps = mapsLoaded;
-
-  const overlay = new maps.OverlayView();
-
-  overlay.onAdd = function() {
-    const div = document.createElement('div');
-    div.style.position = 'absolute';
-    div.innerHTML = `
-      <div
-        style="
-          color: white;
-          background: red;
-          padding: 15px 10px;
-          display: inline-flex;
-          text-align: center;
-          align-items: center;
-          justify-content: center;
-          border-radius: 100%;
-        "
-      >
-        My Marker
-      </div>
-    `;
-
-    this.div_ = div;
-    const panes = this.getPanes();
-    panes.overlayLayer.appendChild(div);
-  };
-
-  overlay.draw = function() {
-    const position = this.getProjection().fromLatLngToDivPixel(new maps.LatLng(38.884, -94.874));
-    const div = this.div_;
-    div.style.left = position.x + 'px';
-    div.style.top = position.y + 'px';
-  };
-
-  overlay.onRemove = function() {
-    if (this.div_) {
-      this.div_.parentNode.removeChild(this.div_);
-      this.div_ = null;
-    }
-  };
-
-  overlay.setMap(map);
-};
 
 const Main = () => {
-  useEffect(() => {
-    const handleResize = () => {
-      if (map && maps) {
-        const center = map.getCenter();
-        maps.event.trigger(map, 'resize');
-        map.setCenter(center);
-      }
+   
+    const [upvotes, setUpvotes] = useState(0);
+    const [downvotes, setDownvotes] = useState(0);
+    
+    const handleUpvote = () => {
+        setUpvotes(upvotes + 1);
     };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
+    
+    const handleDownvote = () => {
+        setDownvotes(downvotes + 1);
     };
-  }, []);
+   
+   
+    const [selected, setSelected] = useState({});
 
-  return (
-    <div style={{ height: '100vh', width: '100%' }}>
-      <GoogleMapReact
-        bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
-        defaultCenter={{ lat: 38.884, lng: -94.874 }}
-        defaultZoom={11}
-        yesIWantToUseGoogleMapApiInternals
-        onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
-      />
-    </div>
-  );
+    const onSelect = item => {
+        setSelected(item);
+    }
+    const mapStyles = {
+        height: "100vh",
+        width: "100%"
+    };
+   
+    const defaultCenter = {
+        lat: 38.8807794, lng: -94.81837
+    }
+
+    const locations = [
+        {
+            name: "Panera",
+            location: {
+                lat: 38.8807794,
+                lng: -94.81837
+            },
+        }
+    ];
+    return (
+        <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
+            <GoogleMap zoom={15} center={defaultCenter} mapContainerStyle={mapStyles}>
+                {
+                    locations.map(item => {
+                        return (
+                            <MarkerF key={item.name} position={item.location} title="This was dumb" onClick={() => onSelect(item)} />
+                        )
+                    })
+                }
+                {
+                    selected.location &&
+                    (
+                        <InfoWindowF
+                            position={selected.location}
+                            clickable={true}
+                            onCloseClick={() => setSelected({})}
+                        >
+                            <div>
+                        <p>{selected.name}</p>
+                        <img src="/logo192.png"></img>
+                        <p>Gun Policy Not Verified</p>
+                        <div className="d-flex justify-content-between">
+                            <div className="d-flex align-items-center">
+                                <button className="btn btn-success btn-sm mr-2" onClick={handleUpvote}>
+                                    <i className="fa fa-thumbs-up"></i> Upvote
+                                </button>
+                                <span>{upvotes}</span>
+                            </div>
+                            <div className="d-flex align-items-center">
+                                <button className="btn btn-danger btn-sm mr-2" onClick={handleDownvote}>
+                                    <i className="fa fa-thumbs-down"></i> Downvote
+                                </button>
+                                <span>{downvotes}</span>
+                            </div>
+                        </div>
+                    </div>
+                        </InfoWindowF>
+                    )
+                }
+            </GoogleMap>
+        </LoadScript>
+    );
 };
 
 export default Main;
 
- /*
-    useEffect(() => {
-        // Fetch businesses data from API or database
-        // and update the 'businesses' state
-        fetchBusinesses();
-    }, []);
-
-    const fetchBusinesses = () => {
-        // Fetch businesses data from API or database
-        // and update the 'businesses' state
-        const fetchedBusinesses = [
-            {
-                id: 1,
-                name: 'Business 1',
-                location: { lat: 37.7749, lng: -122.4194 },
-                gunPolicy: 'Verified',
-            },
-            {
-                id: 2,
-                name: 'Business 2',
-                location: { lat: 37.7749, lng: -122.4316 },
-                gunPolicy: 'User Voted',
-            },
-            // ... other businesses ...
-        ];
-        setBusinesses(fetchedBusinesses);
-    };
-*/
