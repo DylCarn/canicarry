@@ -1,61 +1,84 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import GoogleMapReact from 'google-map-react';
-
-const AnyReactComponent = () => <div style={{
-    color: 'white', 
-    background: 'red',
-    padding: '15px 10px',
-    display: 'inline-flex',
-    textAlign: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: '100%', 
-    transform: 'translate(-50%, -50%)'
-}}>My Marker</div>
 
 let map, maps;
 
 const handleApiLoaded = (mapLoaded, mapsLoaded) => {
-    map = mapLoaded;
-    maps = mapsLoaded;
+  map = mapLoaded;
+  maps = mapsLoaded;
+
+  const overlay = new maps.OverlayView();
+
+  overlay.onAdd = function() {
+    const div = document.createElement('div');
+    div.style.position = 'absolute';
+    div.innerHTML = `
+      <div
+        style="
+          color: white;
+          background: red;
+          padding: 15px 10px;
+          display: inline-flex;
+          text-align: center;
+          align-items: center;
+          justify-content: center;
+          border-radius: 100%;
+        "
+      >
+        My Marker
+      </div>
+    `;
+
+    this.div_ = div;
+    const panes = this.getPanes();
+    panes.overlayLayer.appendChild(div);
+  };
+
+  overlay.draw = function() {
+    const position = this.getProjection().fromLatLngToDivPixel(new maps.LatLng(38.884, -94.874));
+    const div = this.div_;
+    div.style.left = position.x + 'px';
+    div.style.top = position.y + 'px';
+  };
+
+  overlay.onRemove = function() {
+    if (this.div_) {
+      this.div_.parentNode.removeChild(this.div_);
+      this.div_ = null;
+    }
+  };
+
+  overlay.setMap(map);
 };
 
 const Main = () => {
-    const [businesses, setBusinesses] = useState([]);
+  useEffect(() => {
+    const handleResize = () => {
+      if (map && maps) {
+        const center = map.getCenter();
+        maps.event.trigger(map, 'resize');
+        map.setCenter(center);
+      }
+    };
 
-    useEffect(() => {
-        const handleResize = () => {
-            if (map && maps) {
-                const center = map.getCenter();
-                maps.event.trigger(map, 'resize');
-                map.setCenter(center);
-            }
-        };
+    window.addEventListener('resize', handleResize);
 
-        window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
-
-    return (
-        <div style={{ height: '100vh', width: '100%' }}>
-            <GoogleMapReact
-                bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
-                defaultCenter={{ lat: 38.884, lng: -94.874}}
-                defaultZoom={16}
-                yesIWantToUseGoogleMapApiInternals
-                onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
-            >
-                <AnyReactComponent
-                    lat={38.884}
-                    lng={-94.874}
-                    text="My Marker"
-                />
-            </GoogleMapReact>
-        </div>
-    );
+  return (
+    <div style={{ height: '100vh', width: '100%' }}>
+      <GoogleMapReact
+        bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
+        defaultCenter={{ lat: 38.884, lng: -94.874 }}
+        defaultZoom={11}
+        yesIWantToUseGoogleMapApiInternals
+        onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
+      />
+    </div>
+  );
 };
 
 export default Main;
