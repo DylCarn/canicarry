@@ -43,7 +43,14 @@ const Main = () => {
     ];
     return (
         <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
-            <GoogleMap zoom={15} center={defaultCenter} mapContainerStyle={mapStyles}>
+            <GoogleMap zoom={15} 
+            center={defaultCenter} 
+            mapContainerStyle={mapStyles}
+            options={{
+            disableDefaultUI: true, // this removes the zoom buttons and map type button if marked "true"
+            mapTypeControl: false, // this removes the "Map and Satellite" option if marked "false"
+    }}
+            >
                 {
                     locations.map(item => {
                         return (
@@ -70,16 +77,17 @@ const Main = () => {
                                 <img src={upvotes === downvotes ? "/DoNotKnowGunPolicy.png" : (upvotes > downvotes ? "/YesGunPolicy.png" : "/NoGunPolicy.png")} alt="vote result" />
                             </div>
                             <p style={{textAlign: 'center', fontWeight: 'bold'}}>Gun Policy <em>Not Verified</em></p>
+                            <p style={{fontSize: '0.8rem'}}>Let others know what you've seen – what's your observation?</p>
                             <div className="d-flex justify-content-around">
                                 <div className="d-flex flex-column align-items-center">
                                     <button className="btn btn-success btn-sm" onClick={handleUpvote}>
-                                        <i className="fa fa-thumbs-up"></i> Upvote
+                                        <i className="fa fa-thumbs-up"></i> Yes
                                     </button>
                                     <span style={{fontWeight: 'bold'}}>{upvotes}</span>
                                 </div>
                                 <div className="d-flex flex-column align-items-center">
                                     <button className="btn btn-danger btn-sm" onClick={handleDownvote}>
-                                        <i className="fa fa-thumbs-down"></i> Downvote
+                                        <i className="fa fa-thumbs-down"></i> No
                                     </button>
                                     <span style={{fontWeight: 'bold'}}>{downvotes}</span>
                                 </div>
