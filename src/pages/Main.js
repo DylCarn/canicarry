@@ -1,20 +1,21 @@
-import React, { useRef, useEffect, useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { GoogleMap, useLoadScript, MarkerF, LoadScript, InfoWindowF } from '@react-google-maps/api';
 import '../App.css';
 
-
-
 const Main = () => {
-   
+    
     const [upvotes, setUpvotes] = useState(0);
     const [downvotes, setDownvotes] = useState(0);
-    
+    const [voteStatus, setVoteStatus] = useState({ upvoted: false, downvoted: false });
+
     const handleUpvote = () => {
         setUpvotes(upvotes + 1);
+        setVoteStatus({ upvoted: true, downvoted: false });
     };
-    
+
     const handleDownvote = () => {
         setDownvotes(downvotes + 1);
+        setVoteStatus({ upvoted: false, downvoted: true });
     };
    
    
@@ -42,6 +43,8 @@ const Main = () => {
         }
     ];
     return (
+
+        
         <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
             <GoogleMap zoom={15} 
             center={defaultCenter} 
@@ -77,25 +80,31 @@ const Main = () => {
                                 <img src={upvotes === downvotes ? "/DoNotKnowGunPolicy.png" : (upvotes > downvotes ? "/YesGunPolicy.png" : "/NoGunPolicy.png")} alt="vote result" />
                             </div>
                             <p style={{textAlign: 'center', fontWeight: 'bold'}}>Gun Policy <em>Not Verified</em></p>
-                            <p style={{fontSize: '0.8rem'}}>Let others know what you've seen – what's your observation?</p>
+                            <p style={{fontSize: '0.7rem'}}>Let others know what you've seen – what's your observation?</p>
                             <div className="d-flex justify-content-around">
-                                <div className="d-flex flex-column align-items-center">
-                                    <button className="btn btn-success btn-sm" onClick={handleUpvote}>
-                                        <i className="fa fa-thumbs-up"></i> Yes
-                                    </button>
-                                    <span style={{fontWeight: 'bold'}}>{upvotes}</span>
-                                </div>
-                                <div className="d-flex flex-column align-items-center">
-                                    <button className="btn btn-danger btn-sm" onClick={handleDownvote}>
-                                        <i className="fa fa-thumbs-down"></i> No
-                                    </button>
-                                    <span style={{fontWeight: 'bold'}}>{downvotes}</span>
-                                </div>
+                            <div className="d-flex flex-column align-items-center">
+                                <button 
+                                    className={`btn btn-sm ${voteStatus.upvoted ? 'btn-secondary' : 'btn-success'}`} 
+                                    onClick={handleUpvote}
+                                >
+                                    <i className="fa fa-thumbs-up"></i> Yes
+                                </button>
+                                <span style={{fontWeight: 'bold'}}>{upvotes}</span>
+                            </div>
+                            <div className="d-flex flex-column align-items-center">
+                                <button 
+                                    className={`btn btn-sm ${voteStatus.downvoted ? 'btn-secondary' : 'btn-danger'}`} 
+                                    onClick={handleDownvote}
+                                >
+                                    <i className="fa fa-thumbs-down"></i> No
+                                </button>
+                                <span style={{fontWeight: 'bold'}}>{downvotes}</span>
                             </div>
                         </div>
-                    </InfoWindowF>
-                    )
-                }
+                    </div>
+                </InfoWindowF>
+            )
+        }
             </GoogleMap>
         </LoadScript>
     );
