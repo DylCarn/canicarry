@@ -47,7 +47,12 @@ const Main = () => {
                 {
                     locations.map(item => {
                         return (
-                            <MarkerF key={item.name} position={item.location} title="This was dumb" onClick={() => onSelect(item)} />
+                            <MarkerF 
+                            key={item.name} 
+                            position={item.location} 
+                            title="This was dumb" 
+                            onClick={() => onSelect(item)} 
+                            />
                         )
                     })
                 }
@@ -55,30 +60,32 @@ const Main = () => {
                     selected.location &&
                     (
                         <InfoWindowF
-                            position={selected.location}
-                            clickable={true}
-                            onCloseClick={() => setSelected({})}
-                        >
-                            <div>
-                        <p>{selected.name}</p>
-                        <img src="/logo192.png"></img>
-                        <p>Gun Policy Not Verified</p>
-                        <div className="d-flex justify-content-between">
-                            <div className="d-flex align-items-center">
-                                <button className="btn btn-success btn-sm mr-2" onClick={handleUpvote}>
-                                    <i className="fa fa-thumbs-up"></i> Upvote
-                                </button>
-                                <span>{upvotes}</span>
+                        position={selected.location}
+                        clickable={true}
+                        onCloseClick={() => setSelected({})}
+                    >
+                        <div>
+                            <p style={{fontWeight: 'bold'}}>{selected.name}</p>
+                            <div style={{textAlign: 'center'}}>
+                                <img src={upvotes === downvotes ? "/DoNotKnowGunPolicy.png" : (upvotes > downvotes ? "/YesGunPolicy.png" : "/NoGunPolicy.png")} alt="vote result" />
                             </div>
-                            <div className="d-flex align-items-center">
-                                <button className="btn btn-danger btn-sm mr-2" onClick={handleDownvote}>
-                                    <i className="fa fa-thumbs-down"></i> Downvote
-                                </button>
-                                <span>{downvotes}</span>
+                            <p style={{textAlign: 'center', fontWeight: 'bold'}}>Gun Policy <em>Not Verified</em></p>
+                            <div className="d-flex justify-content-around">
+                                <div className="d-flex flex-column align-items-center">
+                                    <button className="btn btn-success btn-sm" onClick={handleUpvote}>
+                                        <i className="fa fa-thumbs-up"></i> Upvote
+                                    </button>
+                                    <span style={{fontWeight: 'bold'}}>{upvotes}</span>
+                                </div>
+                                <div className="d-flex flex-column align-items-center">
+                                    <button className="btn btn-danger btn-sm" onClick={handleDownvote}>
+                                        <i className="fa fa-thumbs-down"></i> Downvote
+                                    </button>
+                                    <span style={{fontWeight: 'bold'}}>{downvotes}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                        </InfoWindowF>
+                    </InfoWindowF>
                     )
                 }
             </GoogleMap>
