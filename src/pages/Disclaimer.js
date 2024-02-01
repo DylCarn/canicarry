@@ -34,7 +34,7 @@ const Disclaimer = () => {
           <ul>
             <li>The app may display user-generated ratings and votes regarding their firearm-carry policies.</li>
             <li>The app does not represent their businesses' official positions or endorsements.</li>
-            <li>Any disputes or concerns related to user-generated content should be directed to the app's administrators at dylan@procarnsolutions.com.</li>
+            <li>Any disputes or concerns related to user-generated content should be directed to the app's administrators at canicarryinfo@gmail.com.</li>
             <li>The app reserves the right to remove, modify, or moderate user-generated content as needed.</li>
           </ul>
           <h3>6. Limitation of Liability:</h3>
@@ -55,7 +55,7 @@ const Disclaimer = () => {
           </p>
           <h3>10. Contact Information:</h3>
           <p>
-            If you have any questions or concerns regarding this disclaimer or the "Can I Carry?" app, please contact us at dylan@procarnsolutions.com.
+            If you have any questions or concerns regarding this disclaimer or the "Can I Carry?" app, please contact us at canicarryinfo@gmail.com.
           </p>
           <h3>11. Jurisdiction:</h3>
           <p>

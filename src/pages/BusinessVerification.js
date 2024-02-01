@@ -55,22 +55,57 @@ function BusinessVerification() {
                     </div>
                 </form>
 
-                <h3>Ownership Verification</h3>
-                <p>Steps for verifying the person registering is the legitimate owner or representative of the business. This might include submitting business registration documents or other official verification methods.</p>
+                <section>
 
-                <h3>Instructions for Verification</h3>
-                <p>Clear instructions on how to submit verification documents or information.</p>
+                <h3>Verify Your Business Ownership</h3>
+
+                <ol>
+                    <li>
+                        <strong>Basic Business Information:</strong>
+                        <p>Enter your business name and address.</p>
+                    </li>
+                    <li>
+                        <strong>Upload Proof of Ownership:</strong>
+                        <p>Upload any one of the following: Business registration certificate, recent utility bill in the business name, or lease agreement.</p>
+                        <p>Ensure documents are clear and legible.</p>
+                    </li>
+                    <li>
+                        <strong>Identity Verification:</strong>
+                        <p>Upload a government-issued photo ID (Driver’s License, Passport, or National ID).</p>
+                    </li>
+                    <li>
+                        <strong>Submit:</strong>
+                        <p>Click 'Submit for Verification'.</p>
+                        <p>We'll review and respond within 3 business days.</p>
+                    </li>
+                </ol>
+                <p><strong>Note:</strong> Your privacy is important. All data is encrypted and handled per our Privacy Policy.</p>
+            </section>
+
+            <section>
+                <h3>Simple Steps for a Smooth Verification</h3>
+
+                <ul>
+                    <li><strong>Clarity:</strong> Ensure all documents are readable.</li>
+                    <li><strong>Currency:</strong> Use only current, valid documents.</li>
+                    <li><strong>Format:</strong> Upload in PDF, JPEG, or PNG. Max size: 5MB per file.</li>
+                    <li><strong>Privacy:</strong> Cover any sensitive personal information not needed for verification.</li>
+                </ul>
+
+                <p><strong>Need Help?</strong></p>
+                <p>Contact our support at canicarryinfo@gmail.com for any assistance.</p>
+            </section>
 
                 <h1>Gun Policy Submission</h1>
 
                 <h3>Policy Details</h3>
                 <form>
                     <div className="mb-3">
-                        <select className="form-control">
-                            <option value="">--Select Policy</option>
-                            <option value="can_carry">Can Carry</option>
-                            <option value="cannot_carry">Cannot Carry</option>
-                        </select>
+                    <select className="form-control">
+                        <option value="" disabled selected>--Select Policy--</option>
+                        <option value="can_carry">Can Carry</option>
+                        <option value="cannot_carry">Cannot Carry</option>
+                    </select>
                     </div>
                     {/* Add more fields as needed */}
                 </form>

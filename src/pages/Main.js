@@ -77,19 +77,19 @@ const Main = () => {
                         <div>
                             <p style={{fontWeight: 'bold'}}>{selected.name}</p>
                             <div style={{textAlign: 'center'}}>
-                                <img src={upvotes === downvotes ? "/DoNotKnowGunPolicy.png" : (upvotes > downvotes ? "/YesGunPolicy.png" : "/NoGunPolicy.png")} alt="vote result" />
+                                <img src={upvotes === downvotes ? "/DoNotKnowGunPolicy.png" : (upvotes > downvotes ? "/YesGunPolicy.png" : "/NoGunPolicy.png") } alt="vote result" />
                             </div>
                             <p style={{textAlign: 'center', fontWeight: 'bold'}}>Gun Policy <em>Not Verified</em></p>
                             <p style={{fontSize: '0.7rem'}}>Let others know what you've seen – what's your observation?</p>
                             <div className="d-flex justify-content-around">
                             <div className="d-flex flex-column align-items-center">
-                                <button 
+                            <button 
                                     className={`btn btn-sm ${voteStatus.upvoted ? 'btn-secondary' : 'btn-success'}`} 
                                     onClick={handleUpvote}
                                 >
                                     <i className="fa fa-thumbs-up"></i> Yes
                                 </button>
-                                <span style={{fontWeight: 'bold'}}>{upvotes}</span>
+                                <span style={{fontWeight: 'bold', color: 'green'}}>{upvotes}</span>
                             </div>
                             <div className="d-flex flex-column align-items-center">
                                 <button 
@@ -98,7 +98,12 @@ const Main = () => {
                                 >
                                     <i className="fa fa-thumbs-down"></i> No
                                 </button>
-                                <span style={{fontWeight: 'bold'}}>{downvotes}</span>
+                                <span style={{fontWeight: 'bold', color: 'red'}}>{downvotes}</span>
+                                <div style={{ position: 'absolute', bottom: 0, right: 0, paddingRight: '5px' }}>
+                                    <a href="/BusinessVerification">
+                                        <img src="/BusinessVerificationRequestImage.png" alt="Business Verification" style={{ width: '35px', height: '35px' }} />
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
