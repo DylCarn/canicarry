@@ -32,7 +32,7 @@ const Main = () => {
             setVoteStatus(voteType);
         }
     }
-    
+
     const [selected, setSelected] = useState({});
     const onSelect = item => {
         setSelected(item);
@@ -85,7 +85,11 @@ const Main = () => {
                    <div>
                        <p style={{fontWeight: 'bold'}}>{selected.name}</p>
                        <div style={{textAlign: 'center'}}>
-                           <img src={votes.upvotes === votes.downvotes ? "/DoNotKnowGunPolicy.png" : (votes.upvotes > votes.downvotes ? "/YesGunPolicy.png" : "/NoGunPolicy.png")} alt="vote result" />
+                           <img 
+                                src={votes.upvotes === votes.downvotes ? "/DoNotKnowGunPolicy.svg" : (votes.upvotes > votes.downvotes ? "/YesGunPolicy.svg" : "/NoGunPolicy.svg")} 
+                                alt="vote result" 
+                                style={{ width: '75px', height: '75px' }}
+                            />
                        </div>
                        <p style={{textAlign: 'center', fontWeight: 'bold'}}>Gun Policy <em>Not Verified</em></p>
                        <p style={{fontSize: '0.7rem'}}>Let others know what you've seen – what's your observation?</p>
