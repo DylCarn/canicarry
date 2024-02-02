@@ -6,30 +6,33 @@ const Main = () => {
     const [votes, setVotes] = useState({ upvotes: 0, downvotes: 0 });
     const [voteStatus, setVoteStatus] = useState(null); // 'upvote', 'downvote', or null
 
-    const handleVote = (type) => {
-        if (voteStatus === type) {
-            // User is trying to vote the same way again, do nothing
-            return;
+    function handleVote(voteType) {
+        // If the user clicks on their current vote, remove their vote
+        if (voteStatus === voteType) {
+            setVoteStatus(null);
+            if (voteType === 'upvote') {
+                setVotes({ ...votes, upvotes: votes.upvotes - 1 });
+            } else {
+                setVotes({ ...votes, downvotes: votes.downvotes - 1 });
+            }
+        } else {
+            // If the user changes their vote, adjust the vote counts accordingly
+            if (voteStatus === 'upvote') {
+                setVotes({ ...votes, upvotes: votes.upvotes - 1, downvotes: votes.downvotes + 1 });
+            } else if (voteStatus === 'downvote') {
+                setVotes({ ...votes, upvotes: votes.upvotes + 1, downvotes: votes.downvotes - 1 });
+            } else {
+                // If the user is voting for the first time, just increment the vote count
+                if (voteType === 'upvote') {
+                    setVotes({ ...votes, upvotes: votes.upvotes + 1 });
+                } else {
+                    setVotes({ ...votes, downvotes: votes.downvotes + 1 });
+                }
+            }
+            setVoteStatus(voteType);
         }
-
-        const newVotes = { ...votes };
-
-        if (voteStatus === 'upvote') {
-            newVotes.upvotes -= 1; // Undo previous upvote
-        } else if (voteStatus === 'downvote') {
-            newVotes.downvotes -= 1; // Undo previous downvote
-        }
-
-        if (type === 'upvote') {
-            newVotes.upvotes += 1;
-        } else if (type === 'downvote') {
-            newVotes.downvotes += 1;
-        }
-
-        setVotes(newVotes);
-        setVoteStatus(type); // Update vote status to the current action
-    };
-
+    }
+    
     const [selected, setSelected] = useState({});
     const onSelect = item => {
         setSelected(item);
@@ -74,45 +77,45 @@ const Main = () => {
                     />
                 ))}
                 {selected.location && (
-                    <InfoWindowF
-                        position={selected.location}
-                        clickable={true}
-                        onCloseClick={() => setSelected({})}
-                    >
-                        <div>
-                            <p style={{fontWeight: 'bold'}}>{selected.name}</p>
-                            <div style={{textAlign: 'center'}}>
-                                <img src={votes.upvotes === votes.downvotes ? "/DoNotKnowGunPolicy.png" : (votes.upvotes > votes.downvotes ? "/YesGunPolicy.png" : "/NoGunPolicy.png")} alt="vote result" />
-                            </div>
-                            <p style={{textAlign: 'center', fontWeight: 'bold'}}>Gun Policy <em>Not Verified</em></p>
-                            <p style={{fontSize: '0.7rem'}}>Let others know what you've seen – what's your observation?</p>
-                            <div className="d-flex justify-content-around">
-                                <div className="d-flex flex-column align-items-center">
-                                    <button 
-                                        className={`btn btn-sm ${voteStatus === 'upvote' ? 'btn-secondary' : 'btn-success'}`} 
-                                        onClick={() => handleVote('upvote')}
-                                    >
-                                        <i className="fa fa-thumbs-up"></i> Yes
-                                    </button>
-                                    <span style={{fontWeight: 'bold', color: 'green'}}>{votes.upvotes}</span>
-                                </div>
-                                <div className="d-flex flex-column align-items-center">
-                                    <button 
-                                        className={`btn btn-sm ${voteStatus === 'downvote' ? 'btn-secondary' : 'btn-danger'}`} 
-                                        onClick={() => handleVote('downvote')}
-                                    >
-                                        <i className="fa fa-thumbs-down"></i> No
-                                    </button>
-                                    <span style={{fontWeight: 'bold', color: 'red'}}>{votes.downvotes}</span>
-                                <div style={{ position: 'absolute', bottom: 0, right: 0, paddingRight: '5px' }}>
-                                    <a href="/BusinessVerification">
-                                        <img src="/BusinessVerificationRequestImage.png" alt="Business Verification" style={{ width: '35px', height: '35px' }} />
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </InfoWindowF>
+                   <InfoWindowF
+                   position={selected.location}
+                   clickable={true}
+                   onCloseClick={() => setSelected({})}
+               >
+                   <div>
+                       <p style={{fontWeight: 'bold'}}>{selected.name}</p>
+                       <div style={{textAlign: 'center'}}>
+                           <img src={votes.upvotes === votes.downvotes ? "/DoNotKnowGunPolicy.png" : (votes.upvotes > votes.downvotes ? "/YesGunPolicy.png" : "/NoGunPolicy.png")} alt="vote result" />
+                       </div>
+                       <p style={{textAlign: 'center', fontWeight: 'bold'}}>Gun Policy <em>Not Verified</em></p>
+                       <p style={{fontSize: '0.7rem'}}>Let others know what you've seen – what's your observation?</p>
+                       <div className="d-flex justify-content-around">
+                           <div className="d-flex flex-column align-items-center">
+                               <button 
+                                   className={`btn btn-sm ${voteStatus === 'upvote' ? 'btn-secondary' : 'btn-success'}`} 
+                                   onClick={() => handleVote('upvote')}
+                               >
+                                   <i className="fa fa-thumbs-up"></i> Yes
+                               </button>
+                               <span style={{fontWeight: 'bold', color: 'green'}}>{votes.upvotes}</span>
+                           </div>
+                           <div className="d-flex flex-column align-items-center">
+                               <button 
+                                   className={`btn btn-sm ${voteStatus === 'downvote' ? 'btn-secondary' : 'btn-danger'}`} 
+                                   onClick={() => handleVote('downvote')}
+                               >
+                                   <i className="fa fa-thumbs-down"></i> No
+                               </button>
+                               <span style={{fontWeight: 'bold', color: 'red'}}>{votes.downvotes}</span>
+                           </div>
+                       </div>
+                       <div style={{ marginTop: '20px' }}>
+                           <a href="/BusinessVerification" style={{ color: 'blue', textDecoration: 'none', paddingTop: '10px' }}>
+                               Is this your business?
+                           </a>
+                       </div>
+                   </div>
+               </InfoWindowF>
             )
         }
             </GoogleMap>
