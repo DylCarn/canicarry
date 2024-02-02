@@ -83,7 +83,7 @@ const Main = () => {
                    onCloseClick={() => setSelected({})}
                >
                    <div>
-                       <p style={{fontWeight: 'bold'}}>{selected.name}</p>
+                       <p style={{fontWeight: 'bold', fontSize: '0.875rem'}}>{selected.name}</p>
                        <div style={{textAlign: 'center'}}>
                            <img 
                                 src={votes.upvotes === votes.downvotes ? "/DoNotKnowGunPolicy.svg" : (votes.upvotes > votes.downvotes ? "/YesGunPolicy.svg" : "/NoGunPolicy.svg")} 
@@ -91,8 +91,8 @@ const Main = () => {
                                 style={{ width: '75px', height: '75px' }}
                             />
                        </div>
-                       <p style={{textAlign: 'center', fontWeight: 'bold'}}>Gun Policy <em>Not Verified</em></p>
-                       <p style={{fontSize: '0.7rem'}}>Let others know what you've seen – what's your observation?</p>
+                       <p style={{textAlign: 'center', fontWeight: 'bold', fontSize: '0.875rem'}}>Gun Policy <em>Not Verified</em></p>
+                       <p style={{fontSize: '0.875rem'}}>Let others know what you've seen – what's your observation?</p>
                        <div className="d-flex justify-content-around">
                            <div className="d-flex flex-column align-items-center">
                                <button 
@@ -114,7 +114,7 @@ const Main = () => {
                            </div>
                        </div>
                        <div style={{ marginTop: '20px' }}>
-                           <a href="/BusinessVerification" style={{ color: 'blue', textDecoration: 'none', paddingTop: '10px' }}>
+                           <a href="/BusinessVerification" style={{ fontSize: '0.875rem', color: 'blue', textDecoration: 'none', paddingTop: '10px' }}>
                                Is this your business?
                            </a>
                        </div>
