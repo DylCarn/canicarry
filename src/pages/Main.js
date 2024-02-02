@@ -104,14 +104,21 @@ const Main = () => {
                                         <i className="fa fa-thumbs-down"></i> No
                                     </button>
                                     <span style={{fontWeight: 'bold', color: 'red'}}>{votes.downvotes}</span>
+                                <div style={{ position: 'absolute', bottom: 0, right: 0, paddingRight: '5px' }}>
+                                    <a href="/BusinessVerification">
+                                        <img src="/BusinessVerificationRequestImage.png" alt="Business Verification" style={{ width: '35px', height: '35px' }} />
+                                    </a>
                                 </div>
                             </div>
                         </div>
-                    </InfoWindowF>
-                )}
+                    </div>
+                </InfoWindowF>
+            )
+        }
             </GoogleMap>
         </LoadScript>
     );
 };
 
 export default Main;
+
