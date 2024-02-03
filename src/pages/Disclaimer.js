@@ -2,8 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Disclaimer = () => {
+  const smallText = { fontSize: '0.8em' }; // Adjust the size as needed
+
   return (
- <div className="container mt-5">
+    <div className="container mt-5" style={smallText}>
       <div className="row justify-content-center">
         <div className="col-md-8">
           <h2 className="mb-4 text-center">"Can I Carry?" App Disclaimer</h2>

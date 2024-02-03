@@ -32,16 +32,20 @@ const LocationServices = () => {
   if (locationEnabled) return null;
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100">
-      <div className="text-center p-4 bg-white border rounded shadow-sm">
-        <h2 className="mb-3">Enable Location</h2>
-        <p className="mb-3">Our app works better with location services turned on.</p>
-        <p className="mb-3">You can adjust your location settings at any time.</p>
-        <button className="btn btn-danger" onClick={handleEnableLocation}>OK, I understand</button>
+    <div className="d-flex flex-column align-items-center justify-content-center" style={{ height: '100vh', backgroundColor: 'white' }}>
+      <img src="canIcarrylogo.png" alt="Logo" style={{ width: '350px', height: '350px' }}/>
+      <div className="col-md-6 col-lg-4">
+        <div className="card" style={{ backgroundColor: '#0B2565', color: 'white' }}>
+          <div className="card-body">
+            <h2 className="mb-3 text-center">Enable Location</h2>
+            <p className="mb-3">Our app works better with location services turned on.</p>
+            <p className="mb-3">You can adjust your location settings at any time.</p>
+            <button className="btn w-100 mb-3" style={{ backgroundColor: '#BE2035', color: 'white' }} onClick={handleEnableLocation}>OK, I understand</button>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
 export default LocationServices;
-//NEW CODEADFADSFASDGFASDG
