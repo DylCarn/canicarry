@@ -92,7 +92,7 @@ const Main = () => {
                             />
                        </div>
                        <p style={{textAlign: 'center', fontWeight: 'bold', fontSize: '0.875rem'}}>Gun Policy <em>Not Verified</em></p>
-                       <p style={{fontSize: '0.875rem'}}>Let others know what you've seen – what's your observation?</p>
+                       <p style={{fontSize: '0.875rem'}}>Let others know the gun policy – what's your observation?</p>
                        <div className="d-flex justify-content-around">
                            <div className="d-flex flex-column align-items-center">
                                <button 
