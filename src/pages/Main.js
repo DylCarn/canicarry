@@ -84,7 +84,9 @@ return (
         googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
         libraries={["places"]}
     >
-        <input ref={autocompleteInputRef} type="text" placeholder="Search Google Places" />
+        <div style={{ position: 'fixed', top: 0, width: '100%', zIndex: 1 }}>
+            <input ref={autocompleteInputRef} type="text" placeholder="Search Google Places" />
+        </div>
         <GoogleMap
             zoom={15}
             center={center} // Use the new state variable here
