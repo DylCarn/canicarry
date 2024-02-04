@@ -98,7 +98,7 @@ return (
         libraries={["places"]}
     >
         <div style={{ position: 'fixed', bottom: 0, width: '100%', zIndex: 1 }}>
-            <input ref={autocompleteInputRef} type="text" placeholder="Search Business Places" />
+            <input ref={autocompleteInputRef} type="text" placeholder="Search Business Places" style={{border: '2px solid #BE2035'}} />
         </div>
         <GoogleMap
     zoom={15}
@@ -151,17 +151,18 @@ return (
                                <span style={{fontWeight: 'bold', color: 'green'}}>{votes.upvotes}</span>
                            </div>
                            <div className="d-flex flex-column align-items-center">
-                               <button 
-                                   className={`btn btn-sm ${voteStatus === 'downvote' ? 'btn-secondary' : 'btn-danger'}`} 
-                                   onClick={() => handleVote('downvote')}
-                               >
-                                   <i className="fa fa-thumbs-down"></i> No
-                               </button>
-                               <span style={{fontWeight: 'bold', color: 'red'}}>{votes.downvotes}</span>
-                           </div>
+                            <button 
+                                className={`btn btn-sm ${voteStatus === 'downvote' ? 'btn-secondary' : ''}`} 
+                                style={{backgroundColor: voteStatus === 'downvote' ? 'grey' : '#BE2035', color: 'white'}}
+                                onClick={() => handleVote('downvote')}
+                            >
+                                <i className="fa fa-thumbs-down"></i> No
+                            </button>
+                            <span style={{fontWeight: 'bold', color: '#BE2035'}}>{votes.downvotes}</span>
+                        </div>
                        </div>
                        <div style={{ marginTop: '20px' }}>
-                           <a href="/BusinessVerification" style={{ fontSize: '0.875rem', color: 'blue', textDecoration: 'none', paddingTop: '10px' }}>
+                           <a href="/BusinessVerification" style={{ fontSize: '0.875rem', color: '#0B2565', textDecoration: 'none', paddingTop: '10px' }}>
                                Is this your business?
                            </a>
                        </div>
