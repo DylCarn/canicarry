@@ -1,43 +1,40 @@
-import React, { useState } from 'react';
-import { GoogleMap, LoadScript, MarkerF, InfoWindowF, Autocomplete } from '@react-google-maps/api';
+import React, { useState, useRef, useEffect } from 'react';
+import { GoogleMap, LoadScript, MarkerF, InfoWindowF } from '@react-google-maps/api';
 import '../App.css';
 
 const Main = () => {
     const [votes, setVotes] = useState({ upvotes: 0, downvotes: 0 });
     const [voteStatus, setVoteStatus] = useState(null); // 'upvote', 'downvote', or null
-
+    const autocompleteInputRef = useRef(null);
     function handleVote(voteType) {
-        // If the user clicks on their current vote, remove their vote
-        if (voteStatus === voteType) {
-            setVoteStatus(null);
-            if (voteType === 'upvote') {
-                setVotes({ ...votes, upvotes: votes.upvotes - 1 });
+        setVoteStatus(prevVoteStatus => {
+            if (prevVoteStatus === voteType) {
+                setVotes(prevVotes => ({
+                    ...prevVotes,
+                    [voteType]: prevVotes[voteType] - 1
+                }));
+                return null;
             } else {
-                setVotes({ ...votes, downvotes: votes.downvotes - 1 });
+                setVotes(prevVotes => {
+                    if (prevVoteStatus === 'upvote') {
+                        return { ...prevVotes, upvotes: prevVotes.upvotes - 1, downvotes: prevVotes.downvotes + 1 };
+                    } else if (prevVoteStatus === 'downvote') {
+                        return { ...prevVotes, upvotes: prevVotes.upvotes + 1, downvotes: prevVotes.downvotes - 1 };
+                    } else {
+                        return { ...prevVotes, [voteType]: prevVotes[voteType] + 1 };
+                    }
+                });
+                return voteType;
             }
-        } else {
-            // If the user changes their vote, adjust the vote counts accordingly
-            if (voteStatus === 'upvote') {
-                setVotes({ ...votes, upvotes: votes.upvotes - 1, downvotes: votes.downvotes + 1 });
-            } else if (voteStatus === 'downvote') {
-                setVotes({ ...votes, upvotes: votes.upvotes + 1, downvotes: votes.downvotes - 1 });
-            } else {
-                // If the user is voting for the first time, just increment the vote count
-                if (voteType === 'upvote') {
-                    setVotes({ ...votes, upvotes: votes.upvotes + 1 });
-                } else {
-                    setVotes({ ...votes, downvotes: votes.downvotes + 1 });
-                }
-            }
-            setVoteStatus(voteType);
-        }
+        });
     }
 
     const [selected, setSelected] = useState({});
+   
     const onSelect = item => {
         setSelected(item);
-        // Reset vote status when selecting a new location
-        setVoteStatus(null);
+        setCenter(item.location); // Update the center of the map to the selected location
+        setVoteStatus(null); // Reset vote status when selecting a new location
     };
 
     const mapStyles = {
@@ -49,7 +46,9 @@ const Main = () => {
         lat: 38.8807794, lng: -94.81837
     };
 
-    const locations = [
+    const [center, setCenter] = useState(defaultCenter); // New state variable
+
+    const [locations, setLocations] = useState([
         {
             name: "Panera",
             location: {
@@ -57,31 +56,57 @@ const Main = () => {
                 lng: -94.81837
             },
         }
-    ];
+    ]);
 
-    return (
-        <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
-            <GoogleMap
-                zoom={15}
-                center={defaultCenter}
-                mapContainerStyle={mapStyles}
-                options={{
-                    disableDefaultUI: true,
-                    mapTypeControl: false,
-                }}>
-                {locations.map(item => (
-                    <MarkerF 
-                        key={item.name} 
-                        position={item.location} 
-                        onClick={() => onSelect(item)} 
-                    />
-                ))}
-                {selected.location && (
-                   <InfoWindowF
-                   position={selected.location}
-                   clickable={true}
-                   onCloseClick={() => setSelected({})}
-               >
+   
+useEffect(() => {
+    if (autocompleteInputRef.current && window.google.maps) {
+        const autocomplete = new window.google.maps.places.Autocomplete(autocompleteInputRef.current);
+
+        autocomplete.addListener("place_changed", () => {
+            const place = autocomplete.getPlace();
+            const newLocation = {
+                name: place.name,
+                location: {
+                    lat: place.geometry.location.lat(),
+                    lng: place.geometry.location.lng(),
+                },
+            };
+
+            setLocations(prevLocations => [...prevLocations, newLocation]); // Add the new location to the existing locations
+            setCenter(newLocation.location); // Update the center of the map
+        });
+    }
+}, []);
+
+return (
+    <LoadScript
+        googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
+        libraries={["places"]}
+    >
+        <input ref={autocompleteInputRef} type="text" placeholder="Search Google Places" />
+        <GoogleMap
+            zoom={15}
+            center={center} // Use the new state variable here
+            mapContainerStyle={mapStyles}
+            options={{
+                disableDefaultUI: true,
+                mapTypeControl: false,
+            }}
+        >
+            {locations.map(item => (
+                <MarkerF 
+                    key={item.name} 
+                    position={item.location} 
+                    onClick={() => onSelect(item)} 
+                />
+            ))}
+            {selected.location && (
+               <InfoWindowF
+               position={selected.location}
+               clickable={true}
+               onCloseClick={() => setSelected({})}
+           >
                    <div>
                        <p style={{fontWeight: 'bold', fontSize: '0.875rem'}}>{selected.name}</p>
                        <div style={{textAlign: 'center'}}>
@@ -104,29 +129,19 @@ const Main = () => {
                                <span style={{fontWeight: 'bold', color: 'green'}}>{votes.upvotes}</span>
                            </div>
                            <div className="d-flex flex-column align-items-center">
-                            <button 
-                                className={`btn btn-sm ${voteStatus === 'downvote' ? 'btn-secondary' : ''}`} 
-                                style={{ backgroundColor: voteStatus === 'downvote' ? '' : '#BE2035', color: 'white' }}
-                                onClick={() => handleVote('downvote')}
-                            >
-                                <i className="fa fa-thumbs-down"></i> No
-                            </button>
-                            <span style={{fontWeight: 'bold', color: '#BE2035'}}>{votes.downvotes}</span>
-                        </div>
+                               <button 
+                                   className={`btn btn-sm ${voteStatus === 'downvote' ? 'btn-secondary' : 'btn-danger'}`} 
+                                   onClick={() => handleVote('downvote')}
+                               >
+                                   <i className="fa fa-thumbs-down"></i> No
+                               </button>
+                               <span style={{fontWeight: 'bold', color: 'red'}}>{votes.downvotes}</span>
+                           </div>
                        </div>
-                       <div className="d-flex flex-column align-items-center" style={{ marginTop: '20px' }}>
-                            <button 
-                                className="btn btn-sm" 
-                                style={{ backgroundColor: '#0B2565', color: 'white' }}
-                                onClick={() => window.open(`https://www.google.com/maps/dir/?api=1&destination=${selected.location.lat},${selected.location.lng}`, "_blank")}
-                            >
-                                <i className="fa fa-map-marker"></i> Directions
-                            </button>
-                        </div>
                        <div style={{ marginTop: '20px' }}>
-                       <a href="/BusinessVerification" style={{ fontSize: '0.875rem', color: '#0B2565', textDecoration: 'none', paddingTop: '10px' }}>
-                            Is this your business?
-                        </a>
+                           <a href="/BusinessVerification" style={{ fontSize: '0.875rem', color: 'blue', textDecoration: 'none', paddingTop: '10px' }}>
+                               Is this your business?
+                           </a>
                        </div>
                    </div>
                </InfoWindowF>
