@@ -97,8 +97,8 @@ return (
         googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
         libraries={["places"]}
     >
-        <div style={{ position: 'fixed', top: 0, width: '100%', zIndex: 1 }}>
-            <input ref={autocompleteInputRef} type="text" placeholder="Search Business Places" style={{ width: '225px' }}  />
+        <div style={{ position: 'fixed', bottom: 0, width: '100%', zIndex: 1 }}>
+            <input ref={autocompleteInputRef} type="text" placeholder="Search Business Places" />
         </div>
         <GoogleMap
     zoom={15}

@@ -15,7 +15,7 @@
 
 .pac-container {
   font-size: 1.5em; /* Increase font size */
-  width: 500px !important; /* Increase width */
+  margin-top: -9em !important;
 }
 
 .App-header {
