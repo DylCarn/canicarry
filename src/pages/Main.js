@@ -101,27 +101,34 @@ return (
             <input ref={autocompleteInputRef} type="text" placeholder="Search Business Places" />
         </div>
         <GoogleMap
-            zoom={15}
-            center={center} // Use the new state variable here
-            mapContainerStyle={mapStyles}
-            options={{
-                disableDefaultUI: true,
-                mapTypeControl: false,
-            }}
-        >
-            {locations.map(item => (
-                <MarkerF 
-                    key={item.name} 
-                    position={item.location} 
-                    onClick={() => onSelect(item)} 
-                />
-            ))}
-            {selected.location && (
-               <InfoWindowF
-               position={selected.location}
-               clickable={true}
-               onCloseClick={() => setSelected({})}
-           >
+    zoom={15}
+    center={center} // Use the new state variable here
+    mapContainerStyle={mapStyles}
+    options={{
+        disableDefaultUI: true,
+        mapTypeControl: false,
+        styles: [
+            {
+                featureType: "poi.business",
+                elementType: "labels",
+                stylers: [{ visibility: "off" }],
+            },
+        ],
+    }}
+>
+    {locations.map(item => (
+        <MarkerF 
+            key={item.name} 
+            position={item.location} 
+            onClick={() => onSelect(item)} 
+        />
+    ))}
+    {selected.location && (
+       <InfoWindowF
+       position={selected.location}
+       clickable={true}
+       onCloseClick={() => setSelected({})}
+   >
                    <div>
                        <p style={{fontWeight: 'bold', fontSize: '0.875rem'}}>{selected.name}</p>
                        <div style={{textAlign: 'center'}}>
