@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GoogleMap, LoadScript, MarkerF, InfoWindowF } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, MarkerF, InfoWindowF, Autocomplete } from '@react-google-maps/api';
 import '../App.css';
 
 const Main = () => {
