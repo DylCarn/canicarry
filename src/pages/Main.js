@@ -98,7 +98,7 @@ return (
         libraries={["places"]}
     >
         <div style={{ position: 'fixed', bottom: 0, width: '100%', zIndex: 1 }}>
-            <input ref={autocompleteInputRef} type="text" placeholder="Search Business Places" style={{border: '2px solid #BE2035'}} />
+            <input ref={autocompleteInputRef} type="text" placeholder="Search Business Here" style={{width: '100%', border: '2px solid #BE2035'}} />
         </div>
         <GoogleMap
     zoom={15}
