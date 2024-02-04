@@ -13,6 +13,11 @@
   }
 }
 
+.pac-container {
+  font-size: 1.5em; /* Increase font size */
+  width: 500px !important; /* Increase width */
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
