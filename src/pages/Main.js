@@ -59,25 +59,38 @@ const Main = () => {
     ]);
 
    
-useEffect(() => {
-    if (autocompleteInputRef.current && window.google.maps) {
-        const autocomplete = new window.google.maps.places.Autocomplete(autocompleteInputRef.current);
-
-        autocomplete.addListener("place_changed", () => {
-            const place = autocomplete.getPlace();
-            const newLocation = {
-                name: place.name,
-                location: {
-                    lat: place.geometry.location.lat(),
-                    lng: place.geometry.location.lng(),
-                },
-            };
-
-            setLocations(prevLocations => [...prevLocations, newLocation]); // Add the new location to the existing locations
-            setCenter(newLocation.location); // Update the center of the map
-        });
-    }
-}, []);
+    useEffect(() => {
+        function initAutocomplete() {
+            if (autocompleteInputRef.current) {
+                const autocomplete = new window.google.maps.places.Autocomplete(autocompleteInputRef.current);
+    
+                autocomplete.addListener("place_changed", () => {
+                    const place = autocomplete.getPlace();
+                    const newLocation = {
+                        name: place.name,
+                        location: {
+                            lat: place.geometry.location.lat(),
+                            lng: place.geometry.location.lng(),
+                        },
+                    };
+    
+                    setLocations(prevLocations => [...prevLocations, newLocation]); // Add the new location to the existing locations
+                    setCenter(newLocation.location); // Update the center of the map
+                });
+            }
+        }
+    
+        if (window.google && window.google.maps) {
+            initAutocomplete();
+        } else {
+            const checkExist = setInterval(() => {
+                if (window.google && window.google.maps) {
+                    initAutocomplete();
+                    clearInterval(checkExist);
+                }
+            }, 100);
+        }
+    }, []);
 
 return (
     <LoadScript
