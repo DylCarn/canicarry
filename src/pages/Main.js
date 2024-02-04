@@ -104,19 +104,29 @@ const Main = () => {
                                <span style={{fontWeight: 'bold', color: 'green'}}>{votes.upvotes}</span>
                            </div>
                            <div className="d-flex flex-column align-items-center">
-                               <button 
-                                   className={`btn btn-sm ${voteStatus === 'downvote' ? 'btn-secondary' : 'btn-danger'}`} 
-                                   onClick={() => handleVote('downvote')}
-                               >
-                                   <i className="fa fa-thumbs-down"></i> No
-                               </button>
-                               <span style={{fontWeight: 'bold', color: 'red'}}>{votes.downvotes}</span>
-                           </div>
+                            <button 
+                                className={`btn btn-sm ${voteStatus === 'downvote' ? 'btn-secondary' : ''}`} 
+                                style={{ backgroundColor: voteStatus === 'downvote' ? '' : '#BE2035', color: 'white' }}
+                                onClick={() => handleVote('downvote')}
+                            >
+                                <i className="fa fa-thumbs-down"></i> No
+                            </button>
+                            <span style={{fontWeight: 'bold', color: '#BE2035'}}>{votes.downvotes}</span>
+                        </div>
                        </div>
+                       <div className="d-flex flex-column align-items-center" style={{ marginTop: '20px' }}>
+                            <button 
+                                className="btn btn-sm" 
+                                style={{ backgroundColor: '#0B2565', color: 'white' }}
+                                onClick={() => window.open(`https://www.google.com/maps/dir/?api=1&destination=${selected.location.lat},${selected.location.lng}`, "_blank")}
+                            >
+                                <i className="fa fa-map-marker"></i> Directions
+                            </button>
+                        </div>
                        <div style={{ marginTop: '20px' }}>
-                           <a href="/BusinessVerification" style={{ fontSize: '0.875rem', color: 'blue', textDecoration: 'none', paddingTop: '10px' }}>
-                               Is this your business?
-                           </a>
+                       <a href="/BusinessVerification" style={{ fontSize: '0.875rem', color: '#0B2565', textDecoration: 'none', paddingTop: '10px' }}>
+                            Is this your business?
+                        </a>
                        </div>
                    </div>
                </InfoWindowF>
