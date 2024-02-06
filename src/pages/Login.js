@@ -12,7 +12,7 @@ const Login = () => {
     return (
         <div className="d-flex flex-column align-items-center justify-content-center" style={{ height: '100vh', backgroundColor: 'white' }}>
             <img src="canIcarrylogo.png" alt="Logo" style={{ width: '350px', height: '350px' }}/>
-            <div className="col-md-6 col-lg-4">
+            <div className="col-md-4 col-lg-4">
                 <div className="card" style={{ backgroundColor: '#0B2565', color: 'white' }}>
                     <div className="card-body">
                         <form>
