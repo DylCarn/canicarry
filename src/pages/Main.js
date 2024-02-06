@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef} from 'react';
 import { GoogleMap, MarkerF, LoadScript, InfoWindowF, Autocomplete } from '@react-google-maps/api';
 import '../App.css';
 //npm i @react-google-maps/api
@@ -113,6 +113,26 @@ const Main = () => {
         }
     };
 
+    const [votes, setVotes] = useState({ upvotes: 0, downvotes: 0 });
+    const [voteStatus, setVoteStatus] = useState(null); // 'upvote', 'downvote', or null
+    const autocompleteInputRef = useRef(null);
+    
+    function handleVote(voteType) {
+        setVoteStatus(prevVoteStatus => {
+            setVotes(prevVotes => {
+                let newVotes = { ...prevVotes };
+                if (prevVoteStatus) {
+                    newVotes[prevVoteStatus]--;
+                }
+                if (prevVoteStatus !== voteType) {
+                    newVotes[voteType]++;
+                }
+                return newVotes;
+            });
+            return prevVoteStatus === voteType ? null : voteType;
+        });
+    }
+
     return (
         //you must include the places library
         <LoadScript libraries={["places"]} googleMapsApiKey='AIzaSyAv29PAQvGNkPFgSrtYSQmCV1p-aac44iw'>
@@ -120,7 +140,7 @@ const Main = () => {
             <h4>Search A Business</h4>
             </div>
             <div className="row text-center justify-content-center pb-2">
-            <div class="col-md-6 col-lg-6 col-sm-4">
+            <div className="col-md-6 col-lg-6 col-sm-4">
                     <Autocomplete onPlaceChanged={onPlaceChanged} onLoad={onLoad}>
                         <input
                             type="text"
@@ -141,7 +161,20 @@ const Main = () => {
                     </Autocomplete>
                 </div>
             </div>
-            <GoogleMap zoom={15} center={defaultCenter} mapContainerStyle={mapStyles}>
+            <GoogleMap zoom={15} 
+            center={defaultCenter} 
+            mapContainerStyle={mapStyles}
+            options={{
+                disableDefaultUI: true,
+                mapTypeControl: false,
+                styles: [
+                    {
+                        featureType: "poi.business",
+                        elementType: "labels",
+                        stylers: [{ visibility: "off" }],
+                    },
+                ],
+            }}>
                 {
                     locations.map(item => {
                         return (
@@ -153,19 +186,49 @@ const Main = () => {
                     selected.location &&
                     (
                         <InfoWindowF
-                            position={selected.location}
-                            clickable={true}
-                            onCloseClick={() => setSelected({})}
-                        >
-                            <div>
-                                <p>{selected.name}</p>
-                                <img src="/logo192.png"></img>
-                                <p>this is a info window and its gay to</p>
-                                <p>this is a info window and its gay to</p>
-                                <p>this is a info window and its gay to</p>
-                                <p>this is a info window and its gay to</p>
-                            </div>
-                        </InfoWindowF>
+                        position={selected.location}
+                        clickable={true}
+                        onCloseClick={() => setSelected({})}
+                    >
+                                    <div>
+                                        <p style={{fontWeight: 'bold', fontSize: '0.875rem'}}>{selected.name}</p>
+                                        <div style={{textAlign: 'center'}}>
+                                            <img 
+                                                 src={votes.upvotes === votes.downvotes ? "/DoNotKnowGunPolicy.svg" : (votes.upvotes > votes.downvotes ? "/YesGunPolicy.svg" : "/NoGunPolicy.svg")} 
+                                                 alt="vote result" 
+                                                 style={{ width: '75px', height: '75px' }}
+                                             />
+                                        </div>
+                                        <p style={{textAlign: 'center', fontWeight: 'bold', fontSize: '0.875rem'}}>Gun Policy <em>Not Verified</em></p>
+                                        <p style={{fontSize: '0.875rem'}}>Let others know the gun policy – what's your observation?</p>
+                                        <div className="d-flex justify-content-around">
+                                            <div className="d-flex flex-column align-items-center">
+                                                <button 
+                                                    className={`btn btn-sm ${voteStatus === 'upvote' ? 'btn-secondary' : 'btn-success'}`} 
+                                                    onClick={() => handleVote('upvote')}
+                                                >
+                                                    <i className="fa fa-thumbs-up"></i> Yes
+                                                </button>
+                                                <span style={{fontWeight: 'bold', color: 'green'}}>{votes.upvotes}</span>
+                                            </div>
+                                            <div className="d-flex flex-column align-items-center">
+                                             <button 
+                                                 className={`btn btn-sm ${voteStatus === 'downvote' ? 'btn-secondary' : ''}`} 
+                                                 style={{backgroundColor: voteStatus === 'downvote' ? 'grey' : '#BE2035', color: 'white'}}
+                                                 onClick={() => handleVote('downvote')}
+                                             >
+                                                 <i className="fa fa-thumbs-down"></i> No
+                                             </button>
+                                             <span style={{fontWeight: 'bold', color: '#BE2035'}}>{votes.downvotes}</span>
+                                         </div>
+                                        </div>
+                                        <div style={{ marginTop: '20px' }}>
+                                            <a href="/BusinessVerification" style={{ fontSize: '0.875rem', color: '#0B2565', textDecoration: 'none', paddingTop: '10px' }}>
+                                                Is this your business?
+                                            </a>
+                                        </div>
+                                    </div>
+                                </InfoWindowF>
                     )
                 }
             </GoogleMap>
