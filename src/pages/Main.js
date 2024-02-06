@@ -135,7 +135,7 @@ const Main = () => {
 
     return (
         //you must include the places library
-        <LoadScript libraries={["places"]} googleMapsApiKey='AIzaSyAv29PAQvGNkPFgSrtYSQmCV1p-aac44iw'>
+        <LoadScript libraries={["places"]} googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
             <div className='row text-center pt-2'>
             <h4>Search A Business</h4>
             </div>
