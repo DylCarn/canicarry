@@ -1,4 +1,4 @@
-import React, { useState, useRef} from 'react';
+import React, { useState } from 'react';
 import { GoogleMap, MarkerF, LoadScript, InfoWindowF, Autocomplete } from '@react-google-maps/api';
 import '../App.css';
 //npm i @react-google-maps/api
@@ -6,42 +6,17 @@ import '../App.css';
 const Main = () => {
     const [selected, setSelected] = useState({});
     const [searchResult, setSearchResult] = useState('')
+    const [PlaceReply, setPlaceReply] = useState({});
+    const [defaultCenter, setDefaultCenter] = useState({ lat: 38.8807794, lng: -94.81837 });
 
     const onSelect = item => {
         setSelected(item);
     }
 
     const mapStyles = {
-        height: "100vh",
+        height: "calc(100vh - 100px)",
         width: "100%"
     };
-
-    const defaultCenter = {
-        lat: 38.8807794, lng: -94.81837
-    }
-
-    const locations = [
-        {
-            name: "Panera",
-            location: {
-                lat: 38.8807794,
-                lng: -94.81837
-            },
-            location: {
-                lat: 38.8807794,
-                lng: -94.813
-            },
-            location: {
-                lat: 38.8807794,
-                lng: -94.81837
-            },
-            location: {
-                lat: 38.8807794,
-                lng: -94.81837
-            },
-        }
-    ];
-
 
     //function executes on page load
     function onLoad(autocomplete) {
@@ -91,11 +66,16 @@ const Main = () => {
                         //variable to store the formatted address from place details result
                         const formattedAddress = place.formatted_address;
                         // console.log(place);
+                        console.log(`latitude = ${place.geometry.location.lat()}`);
+                        console.log(`longitude = ${place.geometry.location.lng()}`);
                         //console log all results
                         console.log(`GPT said yes: ${gptResponse}`);
                         console.log(`Name: ${name}`);
                         console.log(`Business Status: ${status}`);
                         console.log(`Formatted Address: ${formattedAddress}`);
+                       
+                        setPlaceReply({ name: place.name, location: {lat: place.geometry.location.lat(), lng: place.geometry.location.lng() }});
+                        setDefaultCenter({ lat: place.geometry.location.lat(), lng: place.geometry.location.lng() });
                     }
                     //if gpt said no, do something here to indiciate its not a valid business
                     else {
@@ -115,7 +95,6 @@ const Main = () => {
 
     const [votes, setVotes] = useState({ upvotes: 0, downvotes: 0 });
     const [voteStatus, setVoteStatus] = useState(null); // 'upvote', 'downvote', or null
-    const autocompleteInputRef = useRef(null);
     
     function handleVote(voteType) {
         setVoteStatus(prevVoteStatus => {
@@ -161,8 +140,9 @@ const Main = () => {
                     </Autocomplete>
                 </div>
             </div>
-            <GoogleMap zoom={15} 
-            center={defaultCenter} 
+            <GoogleMap 
+            zoom={15} 
+            center={defaultCenter}
             mapContainerStyle={mapStyles}
             options={{
                 disableDefaultUI: true,
@@ -175,13 +155,14 @@ const Main = () => {
                     },
                 ],
             }}>
-                {
-                    locations.map(item => {
-                        return (
-                            <MarkerF key={item.name} position={item.location} title="This was dumb" onClick={() => onSelect(item)} />
-                        )
-                    })
-                }
+                
+                 <MarkerF 
+                 key={PlaceReply.name} 
+                 position={PlaceReply.location} 
+                 title="This was dumb" 
+                 onClick={() => onSelect(PlaceReply)} 
+                 />
+                
                 {
                     selected.location &&
                     (
