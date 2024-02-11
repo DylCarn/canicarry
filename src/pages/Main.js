@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { GoogleMap, MarkerF, LoadScript, InfoWindowF, Autocomplete } from '@react-google-maps/api';
+import { GoogleMap, MarkerF, LoadScript, InfoWindowF, Autocomplete, useLoadScript } from '@react-google-maps/api';
 import '../App.css';
+import {googleMapsLibrary} from '../constants/constantvariables';
 //npm i @react-google-maps/api
 
 const Main = () => {
@@ -8,7 +9,11 @@ const Main = () => {
     const [searchResult, setSearchResult] = useState('')
     const [PlaceReply, setPlaceReply] = useState({});
     const [defaultCenter, setDefaultCenter] = useState({ lat: 38.8807794, lng: -94.81837 });
-
+    const {isLoaded} = useLoadScript({
+        googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+        libraries: googleMapsLibrary
+    });
+      
     const onSelect = item => {
         setSelected(item);
     }
@@ -112,9 +117,11 @@ const Main = () => {
         });
     }
 
+if (!isLoaded) return <div>Loading...</div>;
+
     return (
         //you must include the places library
-        <LoadScript libraries={["places"]} googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
+       <div>
             <div className='row text-center pt-2'>
             <h4>Search A Business</h4>
             </div>
@@ -140,6 +147,7 @@ const Main = () => {
                     </Autocomplete>
                 </div>
             </div>
+            
             <GoogleMap 
             zoom={15} 
             center={defaultCenter}
@@ -213,7 +221,8 @@ const Main = () => {
                     )
                 }
             </GoogleMap>
-        </LoadScript>
+    </div>
+        
     );
 };
 
