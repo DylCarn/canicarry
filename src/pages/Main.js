@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
-import { GoogleMap, MarkerF, LoadScript, InfoWindowF, Autocomplete, useLoadScript } from '@react-google-maps/api';
+import { GoogleMap, MarkerF, InfoWindowF, Autocomplete, useLoadScript } from '@react-google-maps/api';
 import '../App.css';
 import {googleMapsLibrary} from '../constants/constantvariables';
+import axios from 'axios';
+
 //npm i @react-google-maps/api
 
 const Main = () => {
+    const [GPTAnswer, setGPTAnswer] = useState('No.');
     const [selected, setSelected] = useState({});
-    const [searchResult, setSearchResult] = useState('')
+    const [searchResult, setSearchResult] = useState('');
     const [PlaceReply, setPlaceReply] = useState({});
-    const [defaultCenter, setDefaultCenter] = useState({ lat: 38.8807794, lng: -94.81837 });
+    const [defaultCenter, setDefaultCenter] = useState({ lat: 38.8807794, lng: -94.81837 }); //defaultCenter will be locationservices location
     const {isLoaded} = useLoadScript({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
         libraries: googleMapsLibrary
     });
-      
+  
+    
     const onSelect = item => {
         setSelected(item);
     }
@@ -60,7 +64,45 @@ const Main = () => {
                 }
                 //otherwise continue
                 else {
+                   
+
                     /*call chat gpt --- this will be its own method in a helper file we can re use later it will accept a string parameter and return a true - yes, false - no, unclutters main.js*/
+                    let data = JSON.stringify({
+                        "model": "gpt-3.5-turbo",
+                        "messages": [
+                            {
+                                "role": "system",
+                                "content": "Answer yes or no only. If the user's content is a bank, school, or government building",
+                            },
+                            {
+                                "role": "user",
+                                "content": place.name,
+                            }
+                        ],
+                        "max_tokens": 74,
+                        "temperature": 0
+                    });
+                    
+                    const apiKey = process.env.REACT_APP_CHATGPT_API_KEY;
+
+                    let config = {
+                        method: 'post',
+                        maxBodyLength: Infinity,
+                        url: 'https://api.openai.com/v1/chat/completions',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${apiKey}`,
+                        },
+                        data: data
+                    };
+
+                    axios.request(config)
+                    .then((response) => {
+                        console.log(response.data.choices[0].message.content);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
 
                     //check chat GPT response, if it was yes do the marker move thing and stuff, hard setting to Yes. for testing.
                     if (gptResponse === "Yes.") {
@@ -98,6 +140,8 @@ const Main = () => {
         }
     };
 
+    //This is  voting logic that will be calling to the backend to store the vote
+
     const [votes, setVotes] = useState({ upvotes: 0, downvotes: 0 });
     const [voteStatus, setVoteStatus] = useState(null); // 'upvote', 'downvote', or null
     
@@ -120,7 +164,6 @@ const Main = () => {
 if (!isLoaded) return <div>Loading...</div>;
 
     return (
-        //you must include the places library
        <div>
             <div className='row text-center pt-2'>
             <h4>Search A Business</h4>
@@ -165,6 +208,7 @@ if (!isLoaded) return <div>Loading...</div>;
             }}>
                 
                  <MarkerF 
+                 icon={{url: "/MarkerFLogo.png", scaledSize: new window.google.maps.Size(40, 40)}}
                  key={PlaceReply.name} 
                  position={PlaceReply.location} 
                  title="This was dumb" 
