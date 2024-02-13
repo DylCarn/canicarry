@@ -10,25 +10,27 @@ const Login = () => {
     };
 
     return (
-        <div className="container mt-5">
-            <div className="row justify-content-center">
-                <div className="col-md-6 col-lg-4">
-                    <h2 className="mb-4 text-center">Login</h2>
-                    <form>
-                        <div className="mb-3">
-                            <input type="text" className="form-control" placeholder="Username" />
-                        </div>
-                        <div className="mb-3">
-                            <input type="password" className="form-control" placeholder="Password" />
-                        </div>
-                        <button type="submit" className="btn btn-primary w-100 mb-3">Log In</button>
-                        <div className="text-center">
-                            <p className="mb-2">Don't have an account?</p>
-                            <button type="button" className="btn btn-secondary w-100" onClick={handleSignUpClick}>
-                                Sign Up
-                            </button>
-                        </div>
-                    </form>
+        <div className="d-flex flex-column align-items-center justify-content-center" style={{ height: '100vh', backgroundColor: 'white' }}>
+            <img src="canIcarrylogo.png" alt="Logo" style={{ width: '350px', height: '350px' }}/>
+            <div className="col-md-4 col-lg-4">
+                <div className="card" style={{ backgroundColor: '#0B2565', color: 'white' }}>
+                    <div className="card-body">
+                        <form>
+                            <div className="mb-3">
+                                <input type="text" className="form-control" placeholder="Username" />
+                            </div>
+                            <div className="mb-3">
+                                <input type="password" className="form-control" placeholder="Password" />
+                            </div>
+                            <button type="submit" className="btn w-100 mb-3" style={{ backgroundColor: '#BE2035', color: 'white' }}>Log In</button>
+                            <div className="text-center">
+                                <p className="mb-2">Don't have an account?</p>
+                                <button type="button" className="btn btn-light w-100" onClick={handleSignUpClick}>
+                                    Sign Up
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

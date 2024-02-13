@@ -1,48 +1,60 @@
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
     const navigate = useNavigate();
 
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        // Handle the sign-up logic here
+
+        if (password !== confirmPassword) {
+            alert("Passwords do not match. Please try again.");
+            return;
+        }
+
         console.log("Sign up form submitted");
-        // After sign up, redirect the user to the login page or home page
-        navigate('/login'); // Replace with the path you want to redirect to after sign up
+        navigate('/LocationServices'); 
     };
 
     return (
-        <div className="container mt-5">
-            <div className="row justify-content-center">
-                <div className="col-md-6 col-lg-4">
-                    <h2 className="mb-4 text-center">Sign Up</h2>
-                    <form onSubmit={handleSubmit}>
-                        <div className="mb-3">
-                            <input
-                                type="email"
-                                className="form-control"
-                                placeholder="Email"
-                                required
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <input
-                                type="text"
-                                className="form-control"
-                                placeholder="Username"
-                                required
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <input
-                                type="password"
-                                className="form-control"
-                                placeholder="Password"
-                                required
-                            />
-                        </div>
-                        <button type="submit" className="btn btn-primary w-100">Sign Up</button>
-                    </form>
+        <div className="d-flex flex-column align-items-center justify-content-center" style={{ height: '100vh', backgroundColor: 'white' }}>
+            <img src="canIcarrylogo.png" alt="Logo" style={{ width: '350px', height: '350px' }}/>
+            <div className="col-md-6 col-lg-4">
+                <div className="card" style={{ backgroundColor: '#0B2565', color: 'white' }}>
+                    <div className="card-body">
+                        <form onSubmit={handleSubmit}>
+                            <div className="mb-3">
+                                <input type="email" className="form-control" placeholder="Email" required />
+                            </div>
+                            <div className="mb-3">
+                                <input type="text" className="form-control" placeholder="Username" required />
+                            </div>
+                            <div className="mb-3">
+                                <input
+                                    type="password"
+                                    className="form-control"
+                                    placeholder="Password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <input
+                                    type="password"
+                                    className="form-control"
+                                    placeholder="Confirm Password"
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <button type="submit" className="btn w-100 mb-3" style={{ backgroundColor: '#BE2035', color: 'white' }}>Sign Up</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
