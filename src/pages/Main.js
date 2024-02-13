@@ -35,7 +35,7 @@ const Main = () => {
 
     //function executes on autocomplter place change
     function onPlaceChanged() {
-        //test comment for commit
+        //test comment for commit again test commit things
         //declare variables
         let isInvalidType = false;
         let gptResponse = "Yes.";
