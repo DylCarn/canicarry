@@ -1,8 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
 import React, { useState } from 'react'; // Import useState
-import Header from './components/Header';
-import Footer from './components/Footer';
+import Header from './components/header';
+import Footer from './components/footer';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import Login from './pages/Login';
