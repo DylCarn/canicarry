@@ -16,7 +16,9 @@ const Main = () => {
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
         libraries: googleMapsLibrary
     });
-  
+    const [isUpvoteSelected, setUpvoteSelected] = useState(false);
+    const [isDownvoteSelected, setDownvoteSelected] = useState(false);
+    
     
     const onSelect = item => {
         setSelected(item);
@@ -161,7 +163,7 @@ const Main = () => {
         });
     }
 
-if (!isLoaded) return <div>Loading...</div>;
+if (!isLoaded) return <img className="d-flex justify-content-center align-items-center" src="CanICarryLogo.png" alt="Loading..." />;
 
     return (
        <div>
@@ -225,42 +227,34 @@ if (!isLoaded) return <div>Loading...</div>;
                     >
                                     <div>
                                         <p style={{fontWeight: 'bold', fontSize: '0.875rem'}}>{selected.name}</p>
-                                        <div style={{textAlign: 'center'}}>
-                                            <img 
-                                                 src={votes.upvotes === votes.downvotes ? "/DoNotKnowGunPolicy.svg" : (votes.upvotes > votes.downvotes ? "/YesGunPolicy.svg" : "/NoGunPolicy.svg")} 
-                                                 alt="vote result" 
-                                                 style={{ width: '75px', height: '75px' }}
-                                             />
+                                        <p style={{fontSize: '0.875rem'}}>Vote to let others know the policy – what's your observation?</p>
+                                        <div className="d-flex justify-content-center align-items-center">
+                                            <button 
+                                                className={`btn btn-sm ${voteStatus === 'upvote' ? 'btn-secondary' : 'btn-success'}`} 
+                                                onClick={() => { handleVote('upvote'); setUpvoteSelected(prev => !prev); }}
+                                                style={{ border: 'none', background: 'none' }}  
+                                            >
+                                                <img src={isUpvoteSelected ? "YesGunVoteSelect.svg" : "YesGunVote.svg"} alt="Yes Gun" style={{width: '50px', height: '50px'}}/> 
+                                            </button>
+                                            <span style={{fontWeight: 'bold', color: 'green'}}>{votes.upvotes}</span>
                                         </div>
-                                        <p style={{textAlign: 'center', fontWeight: 'bold', fontSize: '0.875rem'}}>Gun Policy <em>Not Verified</em></p>
-                                        <p style={{fontSize: '0.875rem'}}>Let others know the gun policy – what's your observation?</p>
-                                        <div className="d-flex justify-content-around">
-                                            <div className="d-flex flex-column align-items-center">
-                                                <button 
-                                                    className={`btn btn-sm ${voteStatus === 'upvote' ? 'btn-secondary' : 'btn-success'}`} 
-                                                    onClick={() => handleVote('upvote')}
-                                                >
-                                                    <i className="fa fa-thumbs-up"></i> Yes
-                                                </button>
-                                                <span style={{fontWeight: 'bold', color: 'green'}}>{votes.upvotes}</span>
-                                            </div>
-                                            <div className="d-flex flex-column align-items-center">
-                                             <button 
-                                                 className={`btn btn-sm ${voteStatus === 'downvote' ? 'btn-secondary' : ''}`} 
-                                                 style={{backgroundColor: voteStatus === 'downvote' ? 'grey' : '#BE2035', color: 'white'}}
-                                                 onClick={() => handleVote('downvote')}
-                                             >
-                                                 <i className="fa fa-thumbs-down"></i> No
-                                             </button>
-                                             <span style={{fontWeight: 'bold', color: '#BE2035'}}>{votes.downvotes}</span>
-                                         </div>
+                                        <div className="d-flex justify-content-center align-items-center">
+                                            <button 
+                                                className={`btn btn-sm ${voteStatus === 'downvote' ? 'btn-secondary' : ''}`} 
+                                                onClick={() => { handleVote('downvote'); setDownvoteSelected(prev => !prev); }}
+                                                style={{ border: 'none', background: 'none' }}  
+                                            >
+                                                <img src={isDownvoteSelected ? "NoGunVoteSelect.svg" : "NoGunVote.svg"} alt="No Gun" style={{width: '50px', height: '50px'}}/> 
+                                            </button>
+                                            <span style={{fontWeight: 'bold', color: '#BE2035'}}>{votes.downvotes}</span>
                                         </div>
+                                        <p style={{textAlign: 'center', fontWeight: 'bold', fontSize: '0.875rem'}}> Policy <em>Not Verified</em></p>
                                         <div style={{ marginTop: '20px' }}>
                                             <a href="/BusinessVerification" style={{ fontSize: '0.875rem', color: '#0B2565', textDecoration: 'none', paddingTop: '10px' }}>
                                                 Is this your business?
                                             </a>
                                         </div>
-                                    </div>
+                                        </div>
                                 </InfoWindowF>
                     )
                 }
