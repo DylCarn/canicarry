@@ -10,7 +10,6 @@ import { apiKey, excludeList } from '../constants/constantvariables';
 const Main = () => {
     //This is  voting logic that will be calling to the backend to store the vote
     const gptAnswer = useRef("Yes.")
-    const [isWindowOpen, setIsWindowOpen] = useState(false)
     const [selected, setSelected] = useState({});
     const [searchResult, setSearchResult] = useState('');
     const [PlaceReply, setPlaceReply] = useState({});
@@ -34,9 +33,7 @@ const Main = () => {
     const onSelect = item => {
         setSelected(item);
     }
-    const ShowInfoWindow = () => {
-        setIsWindowOpen(true);
-    }
+
     const GetGPTAnswer = async (name) => {
         let data = JSON.stringify({
             "model": "gpt-3.5-turbo",
@@ -69,13 +66,12 @@ const Main = () => {
         await axios.request(config)
             .then((response) => {
                 gptAnswer.current = response.data.choices[0].message.content
-                console.log(`In Then Statement: ${gptAnswer.current}`);
             })
             .catch((error) => {
                 console.log(error);
             });
     }
-    //function executes on autocomplter place change
+
     const onPlaceChanged = async () => {
         if (searchResult != null) {
             try {
@@ -85,7 +81,6 @@ const Main = () => {
                 }
                 else {
                     await GetGPTAnswer(place.name);
-                    console.log(`After Request: ${gptAnswer.current}`);
                     if (gptAnswer.current === "No") {
                         setPlaceReply({ name: place.name, location: { lat: place.geometry.location.lat(), lng: place.geometry.location.lng() } });
                         setDefaultCenter({ lat: place.geometry.location.lat(), lng: place.geometry.location.lng() });
