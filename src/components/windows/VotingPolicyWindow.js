@@ -1,4 +1,4 @@
-const GunPolicyWindow = () => {
+const VotingPolicyWindow = () => {
     return (
       <div>
         {/* map component content goes here */}
@@ -6,4 +6,4 @@ const GunPolicyWindow = () => {
     );
   };
   
-  export default GunPolicyWindow;
+  export default VotingPolicyWindow;
