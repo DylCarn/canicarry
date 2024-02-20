@@ -1,8 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
 import React, { useState } from 'react'; // Import useState
-import Header from './components/Header';
-import Footer from './components/Footer';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import Login from './pages/Login';
@@ -17,7 +15,6 @@ function App() {
     return (
         <React.StrictMode>
             <Router>
-                <Header />
                 <Routes>
                     <Route path='/' element={<Login />} />
                     <Route path="/SignUp" element={<SignUp />} />
@@ -26,7 +23,6 @@ function App() {
                     <Route path="/Main" element={<Main />} />
                     <Route path="/BusinessVerification" element={<BusinessVerification />} />
                 </Routes>
-                <Footer />
             </Router>
         </React.StrictMode>
     );
