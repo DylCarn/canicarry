@@ -1,7 +1,7 @@
 const GunPolicyVoteOwnerVerification = () => {
     return (
       <div>
-        {/* map component content goes here */}
+        <h2 src='/BusinessVerification'>Are you the owner?</h2>
       </div>
     );
   };
