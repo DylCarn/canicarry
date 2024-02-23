@@ -1,10 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { GoogleMap, MarkerF, InfoWindowF, Autocomplete, useLoadScript } from '@react-google-maps/api';
-import '../App.css';
 import { googleMapsLibrary } from '../constants/constantvariables';
 import axios from 'axios';
 import { ValidateList } from '../helpers/validators';
 import { apiKey, excludeList } from '../constants/constantvariables';
+import { Container, Navbar } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 //npm i @react-google-maps/api
 
 const Main = () => {
@@ -20,13 +22,12 @@ const Main = () => {
     });
 
     const mapStyles = {
-        height: "calc(100vh - 100px)",
+        height: "720px",
         width: "100%"
     };
 
     //function executes on page load
     function onLoad(autocomplete) {
-        //on load we are setting searchResult to the autocomplete object
         setSearchResult(autocomplete);
     };
 
@@ -51,7 +52,6 @@ const Main = () => {
             "temperature": 0
         });
 
-
         let config = {
             method: 'post',
             maxBodyLength: Infinity,
@@ -73,6 +73,7 @@ const Main = () => {
     }
 
     const onPlaceChanged = async () => {
+        console.log(searchResult)
         if (searchResult != null) {
             try {
                 const place = searchResult.getPlace();
@@ -100,14 +101,62 @@ const Main = () => {
     };
 
     if (!isLoaded) return <div>Loading...</div>;
-
     return (
-        <div>
-            <div className='row text-center pt-2'>
+        <Container fluid="true">
+
+            
+            <Container fluid="true" style={{paddingTop:"5px", paddingBottom:"5px"}}>
+            <GoogleMap
+                
+                zoom={15}
+                center={defaultCenter}
+                mapContainerStyle={mapStyles}
+                options={{
+                    disableDefaultUI: true,
+                    mapTypeControl: false,
+                    styles: [
+                        {
+                            featureType: "poi.business",
+                            elementType: "labels",
+                            stylers: [{ visibility: "off" }],
+
+                        },
+                    ],
+                }}>
+                <MarkerF
+                    icon={{ url: "/MarkerFLogo.png", scaledSize: new window.google.maps.Size(40, 40) }}
+                    key={PlaceReply.name}
+                    position={PlaceReply.location}
+                    title="This was dumb"
+                    onClick={() => onSelect(PlaceReply)}>
+                    {
+                        selected.location &&
+                        (
+                            <InfoWindowF
+                                position={selected.location}
+                                clickable={true}
+                                onCloseClick={() => setSelected({})}
+                            >
+                                <div>
+                                    <h2>{selected.name}</h2>
+                                </div>
+                            </InfoWindowF>
+                        )
+                    }
+                </MarkerF>
+            </GoogleMap>
+            </Container>
+
+
+
+            {/*Component*/}
+            <div className='container-fluid bg-dark pb-4'>
+            <div className='row text-center pt-2 text-light'>
                 <h4>Search A Business</h4>
             </div>
-            <div className="row text-center justify-content-center pb-2">
-                <div className="col-md-6 col-lg-6 col-sm-4">
+            <Container>
+                <Navbar expand="lg" className="bg-dark" sticky='bottom'>
+                    <Container className='justify-content-center'>
                     <Autocomplete onPlaceChanged={onPlaceChanged} onLoad={onLoad}>
                         <input
                             type="text"
@@ -122,58 +171,17 @@ const Main = () => {
                                 boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
                                 fontSize: `14px`,
                                 outline: `none`,
-                                textOverflow: `ellipses`
+                                textOverflow: `ellipses`,
                             }}
                         />
                     </Autocomplete>
-                </div>
+                    </Container>
+                    </Navbar>
+            </Container>
             </div>
 
-            <GoogleMap
-                zoom={15}
-                center={defaultCenter}
-                mapContainerStyle={mapStyles}
-                options={{
-                    disableDefaultUI: true,
-                    mapTypeControl: false,
-                    styles: [
-                        {
-                            featureType: "poi.business",
-                            elementType: "labels",
-                            stylers: [{ visibility: "off" }],
-                            height: "calc(100vh - 100px)",
-                            width: "100%"
-                        },
-                    ],
-                }}>
-                <MarkerF
-                    icon={{ url: "/MarkerFLogo.png", scaledSize: new window.google.maps.Size(40, 40) }}
-                    key={PlaceReply.name}
-                    position={PlaceReply.location}
-                    title="This was dumb"
-                    onClick={() => onSelect(PlaceReply)} 
-                >
-                     {
-                    selected.location &&
-                    (
-                        <InfoWindowF
-                        position={selected.location}
-                        clickable={true}
-                        onCloseClick={() => setSelected({})}
-                    >
-                    <div>
-                        <h2>{selected.name}</h2>
-                    </div>
-                    </InfoWindowF>
-                    )
-                }
-
-                </MarkerF>
-
-
-
-            </GoogleMap>
-        </div>
+            
+        </Container>
 
     );
 };

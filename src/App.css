@@ -1,3 +1,10 @@
+html,body{
+  margin: 0 !important;
+  height: 100vh !important;
+}
+#root{
+  min-height: 100vh !important;
+}
 .App {
   text-align: center;
 }
@@ -36,4 +43,14 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.pac-container {
+  font-size: 1.5em; /* Increase font size */
+  margin-top: -9em !important;
+}
+
+.stuck-element{
+  background-color: #a42f2c;
+  color: white;
 }
