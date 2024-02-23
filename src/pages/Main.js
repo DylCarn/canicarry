@@ -210,13 +210,13 @@ if (!isLoaded) return <img className="d-flex justify-content-center align-items-
                 ],
             }}>
                 
-                 <MarkerF 
-                 icon={{url: "/MarkerFLogo.png", scaledSize: new window.google.maps.Size(40, 40)}}
-                 key={PlaceReply.name} 
-                 position={PlaceReply.location} 
-                 title="This was dumb" 
-                 onClick={() => onSelect(PlaceReply)} 
-                 />
+                <MarkerF
+                    icon={{ url: ReturnMarkerGunIcon('no') }}
+                    key={PlaceReply.name}
+                    position={PlaceReply.location}
+                    title="This was dumb"
+                    onClick={() => onSelect(PlaceReply)}
+                />
                 
                 {
                     selected.location &&
