@@ -3,6 +3,7 @@ import { GoogleMap, MarkerF, InfoWindowF, Autocomplete, useLoadScript } from '@r
 import '../App.css';
 import {googleMapsLibrary} from '../constants/constantvariables';
 import axios from 'axios';
+import ReturnMarkerGunIcon from '../components/markers/GunPolicyMarker'
 
 //npm i @react-google-maps/api
 
@@ -174,21 +175,9 @@ if (!isLoaded) return <img className="d-flex justify-content-center align-items-
             <div className="row text-center justify-content-center pb-2">
             <div className="col-md-6 col-lg-6 col-sm-4">
                     <Autocomplete onPlaceChanged={onPlaceChanged} onLoad={onLoad}>
-                        <input
+                        <input className="AutoSuggest"
                             type="text"
                             placeholder="Search... "
-                            style={{
-                                boxSizing: `border-box`,
-                                border: `1px solid transparent`,
-                                width: `240px`,
-                                height: `32px`,
-                                padding: `0 12px`,
-                                borderRadius: `3px`,
-                                boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-                                fontSize: `14px`,
-                                outline: `none`,
-                                textOverflow: `ellipses`
-                            }}
                         />
                     </Autocomplete>
                 </div>

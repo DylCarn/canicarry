@@ -1,4 +1,4 @@
-export function ReturnMarkerGunIcon(reply){
+function ReturnMarkerGunIcon(reply){
   //"NoGunPolicy" is meant to be a filler for the back end.
   let your_mom = ""
   switch(reply){
@@ -14,3 +14,5 @@ export function ReturnMarkerGunIcon(reply){
   }
  //{icon:MarkerIconURL, scaledSize: new window.google.maps.Size(40, 40)}
  }
+
+ export default ReturnMarkerGunIcon;
