@@ -216,8 +216,8 @@ if (!isLoaded) return <img className="d-flex justify-content-center align-items-
                         onCloseClick={() => setSelected({})}
                     >
                                     <div>
-                                        <p style={{fontWeight: 'bold', fontSize: '0.875rem'}}>{selected.name}</p>
-                                        <p style={{fontSize: '0.875rem'}}>Vote to let others know the policy – what's your observation?</p>
+                                        <p className = 'InfoWindowText Business'>{selected.name}</p>
+                                        <p className = 'InfoWindowText'>Vote to let others know the policy – what's your observation?</p>
                                         <div className="d-flex justify-content-center align-items-center">
                                             <button 
                                                 className={`btn btn-sm ${voteStatus === 'upvote' ? 'btn-secondary' : 'btn-success'}`} 
@@ -240,7 +240,7 @@ if (!isLoaded) return <img className="d-flex justify-content-center align-items-
                                         </div>
                                         <p style={{textAlign: 'center', fontWeight: 'bold', fontSize: '0.875rem'}}> Policy <em>Not Verified</em></p>
                                         <div style={{ marginTop: '20px' }}>
-                                            <a href="/BusinessVerification" style={{ fontSize: '0.875rem', color: '#0B2565', textDecoration: 'none', paddingTop: '10px' }}>
+                                            <a href="/BusinessVerification" className ="InfoWindowText"style={{ color: '#0B2565', textDecoration: 'none', paddingTop: '10px' }}>
                                                 Is this your business?
                                             </a>
                                         </div>

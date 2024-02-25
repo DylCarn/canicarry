@@ -24,3 +24,11 @@ code {
   outline: none;
   text-overflow: ellipsis;
 }
+
+.InfoWindowText {
+font-size: 0.875rem;
+}
+
+.Business {
+  font-weight: bold;
+}
