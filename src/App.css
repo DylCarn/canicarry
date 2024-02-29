@@ -45,12 +45,3 @@ html,body{
   }
 }
 
-.pac-container {
-  font-size: 1.5em; /* Increase font size */
-  margin-top: -9em !important;
-}
-
-.stuck-element{
-  background-color: #a42f2c;
-  color: white;
-}

@@ -1,12 +1,25 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import axiosBaseURL from '../http';
 const Login = () => {
     const navigate = useNavigate();
 
-    const handleSignUpClick = () => {
-        // Navigate to the sign-up page when the user clicks the sign-up button
-        navigate('/signup'); // Replace '/signup' with your actual signup route
+
+    const handleSignUpClick = (event) => {
+            axiosBaseURL.get("/test_api/test/", {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }).then((response) => {
+                console.log(response) 
+             
+                for (var i = 0; i < response.data.length; i++) {
+                console.log(response.data[i].username)
+            }
+
+            }).catch(function (error) {
+                console.log(error)
+            });
     };
 
     return (

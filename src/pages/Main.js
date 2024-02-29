@@ -1,12 +1,10 @@
 import React, { useState, useRef } from 'react';
 import { GoogleMap, MarkerF, InfoWindowF, Autocomplete, useLoadScript } from '@react-google-maps/api';
-import { googleMapsLibrary } from '../constants/constantvariables';
+import '../App.css';
+import {googleMapsLibrary, gunIcon} from '../constants/constantvariables';
 import axios from 'axios';
-import { ValidateList } from '../helpers/validators';
-import { apiKey, excludeList } from '../constants/constantvariables';
-import { Container, Navbar } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min';
+import ReturnMarkerGunIcon from '../components/markers/GunPolicyMarker'
+import { Button } from 'react-bootstrap';
 //npm i @react-google-maps/api
 
 const Main = () => {
@@ -20,6 +18,14 @@ const Main = () => {
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
         libraries: googleMapsLibrary
     });
+    const [isUpvoteSelected, setUpvoteSelected] = useState(false);
+    const [isDownvoteSelected, setDownvoteSelected] = useState(false);
+    
+    
+    const onSelect = item => {
+        setSelected(item);
+    }
+
 
     const mapStyles = {
         height: "720px",
@@ -147,32 +153,19 @@ const Main = () => {
             </GoogleMap>
             </Container>
 
+if (!isLoaded) return <img className="Center" src="CanICarryLogo.png" alt="Loading..." />;
 
-
-            {/*Component*/}
-            <div className='container-fluid bg-dark pb-4'>
-            <div className='row text-center pt-2 text-light'>
-                <h4>Search A Business</h4>
+    return (
+       <div>
+            <div className='text-center pt-2'>
+            <h4>Search A Business</h4>
             </div>
-            <Container>
-                <Navbar expand="lg" className="bg-dark" sticky='bottom'>
-                    <Container className='justify-content-center'>
+            <div className="Center row pb-2">
+            <div className="col-md-6 col-lg-6 col-sm-4">
                     <Autocomplete onPlaceChanged={onPlaceChanged} onLoad={onLoad}>
-                        <input
+                        <input className="AutoSuggest"
                             type="text"
                             placeholder="Search... "
-                            style={{
-                                boxSizing: `border-box`,
-                                border: `1px solid transparent`,
-                                width: `240px`,
-                                height: `32px`,
-                                padding: `0 12px`,
-                                borderRadius: `3px`,
-                                boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-                                fontSize: `14px`,
-                                outline: `none`,
-                                textOverflow: `ellipses`,
-                            }}
                         />
                     </Autocomplete>
                     </Container>
@@ -180,9 +173,67 @@ const Main = () => {
             </Container>
             </div>
 
-            
-        </Container>
-
+           
+            <GoogleMap 
+            zoom={15} 
+            center={defaultCenter}
+            mapContainerStyle={mapStyles}
+            options={{
+                disableDefaultUI: true,
+                mapTypeControl: false,
+                styles: [
+                    {
+                        featureType: "poi.business",
+                        elementType: "labels",
+                        stylers: [{ visibility: "off" }],
+                    },
+                ],
+            }}>
+                
+                <MarkerF
+                    icon={{ url: gunIcon['no'] }}
+                    key={PlaceReply.name}
+                    position={PlaceReply.location}
+                    title="This was dumb"
+                    onClick={() => onSelect(PlaceReply)}
+                />
+                
+                {
+                    selected.location &&
+                    (
+                        <InfoWindowF
+                        position={selected.location}
+                        clickable={true}
+                        onCloseClick={() => setSelected({})}
+                    >
+                                    <div>
+                                        <p className = 'InfoWindowText Business'>{selected.name}</p>
+                                        <p className = 'InfoWindowText'>Vote to let others know the policy – what's your observation?</p>
+                                        <div className="Center">
+                                            <Button className='buttonClass'>
+                                                <img className="Icon" src={isUpvoteSelected ? "YesGunVoteSelect.svg" : "YesGunVote.svg"} alt="Yes Gun"/> 
+                                            </Button>
+                                            <span className='YesText'>{votes.upvotes}</span>
+                                        </div>
+                                        <div className="Center">
+                                            <Button className='buttonClass'>
+                                                <img className="Icon"src={isDownvoteSelected ? "NoGunVoteSelect.svg" : "NoGunVote.svg"} alt="No Gun"/> 
+                                            </Button>
+                                            <span className='NoText'>{votes.downvotes}</span>
+                                        </div>
+                                        <p className="InfoWindowText"style={{textAlign: 'center', fontWeight: 'bold'}}> Policy <em>Not Verified</em></p>
+                                        <div style={{ marginTop: '20px' }}>
+                                            <a href="/BusinessVerification" className ="InfoWindowText BusinessVerify">
+                                                Is this your business?
+                                            </a>
+                                        </div>
+                                        </div>
+                                </InfoWindowF>
+                    )
+                }
+            </GoogleMap>
+    </div>
+        
     );
 };
 
