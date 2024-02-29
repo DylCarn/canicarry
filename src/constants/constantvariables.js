@@ -5,3 +5,4 @@ export const gunIcon = {
     "yes": "/NoGunPolicyMarker.png",
     "unknown": "/UnknownGunPolicyMarker.svg"
 }
+
