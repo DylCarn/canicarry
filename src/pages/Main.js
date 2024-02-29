@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { GoogleMap, MarkerF, InfoWindowF, Autocomplete, useLoadScript } from '@react-google-maps/api';
 import '../App.css';
-import {googleMapsLibrary} from '../constants/constantvariables';
+import {googleMapsLibrary, gunIcon} from '../constants/constantvariables';
 import axios from 'axios';
 import ReturnMarkerGunIcon from '../components/markers/GunPolicyMarker'
+import { Button } from 'react-bootstrap';
+
 
 //npm i @react-google-maps/api
 
@@ -165,14 +167,14 @@ const Main = () => {
         });
     }
 
-if (!isLoaded) return <img className="d-flex justify-content-center align-items-center" src="CanICarryLogo.png" alt="Loading..." />;
+if (!isLoaded) return <img className="Center" src="CanICarryLogo.png" alt="Loading..." />;
 
     return (
        <div>
-            <div className='row text-center pt-2'>
+            <div className='text-center pt-2'>
             <h4>Search A Business</h4>
             </div>
-            <div className="row text-center justify-content-center pb-2">
+            <div className="Center row pb-2">
             <div className="col-md-6 col-lg-6 col-sm-4">
                     <Autocomplete onPlaceChanged={onPlaceChanged} onLoad={onLoad}>
                         <input className="AutoSuggest"
@@ -200,7 +202,7 @@ if (!isLoaded) return <img className="d-flex justify-content-center align-items-
             }}>
                 
                 <MarkerF
-                    icon={{ url: ReturnMarkerGunIcon('no') }}
+                    icon={{ url: gunIcon['no'] }}
                     key={PlaceReply.name}
                     position={PlaceReply.location}
                     title="This was dumb"
@@ -218,29 +220,21 @@ if (!isLoaded) return <img className="d-flex justify-content-center align-items-
                                     <div>
                                         <p className = 'InfoWindowText Business'>{selected.name}</p>
                                         <p className = 'InfoWindowText'>Vote to let others know the policy – what's your observation?</p>
-                                        <div className="d-flex justify-content-center align-items-center">
-                                            <button 
-                                                className={`btn btn-sm ${voteStatus === 'upvote' ? 'btn-secondary' : 'btn-success'}`} 
-                                                onClick={() => { handleVote('upvote'); setUpvoteSelected(prev => !prev); }}
-                                                style={{ border: 'none', background: 'none' }}  
-                                            >
-                                                <img src={isUpvoteSelected ? "YesGunVoteSelect.svg" : "YesGunVote.svg"} alt="Yes Gun" style={{width: '50px', height: '50px'}}/> 
-                                            </button>
-                                            <span style={{fontWeight: 'bold', color: 'green'}}>{votes.upvotes}</span>
+                                        <div className="Center">
+                                            <Button className='buttonClass'>
+                                                <img className="Icon" src={isUpvoteSelected ? "YesGunVoteSelect.svg" : "YesGunVote.svg"} alt="Yes Gun"/> 
+                                            </Button>
+                                            <span className='YesText'>{votes.upvotes}</span>
                                         </div>
-                                        <div className="d-flex justify-content-center align-items-center">
-                                            <button 
-                                                className={`btn btn-sm ${voteStatus === 'downvote' ? 'btn-secondary' : ''}`} 
-                                                onClick={() => { handleVote('downvote'); setDownvoteSelected(prev => !prev); }}
-                                                style={{ border: 'none', background: 'none' }}  
-                                            >
-                                                <img src={isDownvoteSelected ? "NoGunVoteSelect.svg" : "NoGunVote.svg"} alt="No Gun" style={{width: '50px', height: '50px'}}/> 
-                                            </button>
-                                            <span style={{fontWeight: 'bold', color: '#BE2035'}}>{votes.downvotes}</span>
+                                        <div className="Center">
+                                            <Button className='buttonClass'>
+                                                <img className="Icon"src={isDownvoteSelected ? "NoGunVoteSelect.svg" : "NoGunVote.svg"} alt="No Gun"/> 
+                                            </Button>
+                                            <span className='NoText'>{votes.downvotes}</span>
                                         </div>
-                                        <p style={{textAlign: 'center', fontWeight: 'bold', fontSize: '0.875rem'}}> Policy <em>Not Verified</em></p>
+                                        <p className="InfoWindowText"style={{textAlign: 'center', fontWeight: 'bold'}}> Policy <em>Not Verified</em></p>
                                         <div style={{ marginTop: '20px' }}>
-                                            <a href="/BusinessVerification" className ="InfoWindowText"style={{ color: '#0B2565', textDecoration: 'none', paddingTop: '10px' }}>
+                                            <a href="/BusinessVerification" className ="InfoWindowText BusinessVerify">
                                                 Is this your business?
                                             </a>
                                         </div>
