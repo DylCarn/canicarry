@@ -2,14 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axiosBaseURL from '../http';
 
-const disclaimer_data = (value) => {
-  let disclaimer_content = ''
-
-  //disclaimer_content = Header ? CharacterData typeof (integer) : paragraph;
-}
-
-
-
 const Disclaimer = () => {
   const [disclaimerData, setDisclaimerData] = useState();
   const [disclaimerOBJ, setDisclaimerOBJ] = useState();
@@ -54,8 +46,6 @@ const Disclaimer = () => {
           }
         }
         else {
-
-
           disclaimerOBJ[header] = disclaimerArray[i]
           header = ""
         }
@@ -88,7 +78,9 @@ const Disclaimer = () => {
             <div>
               <h3 key={key}>{key}</h3>
               <p>{disclaimerOBJ[key]}</p>
-              {disclaimerOBJ[key].includes("5") && <div><li>5</li></div>}
+              {disclaimerOBJ[key].includes("businesses acknowledge and consent to the following: ") &&
+                <ul>{listItems.map(item => <li>{item}</li>)}</ul>
+              }
             </div>
           )}
 

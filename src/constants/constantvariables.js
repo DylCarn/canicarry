@@ -6,3 +6,4 @@ export const gunIcon = {
     "unknown": "/UnknownGunPolicyMarker.svg"
 }
 
+export const loadingStyle = { position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)" };

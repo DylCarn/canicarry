@@ -1,30 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosBaseURL from '../http';
+
 const Login = () => {
     const navigate = useNavigate();
+    const [loginData, setLoginData] = useState();
+    const [loginOBJ, setLoginOBJ] = useState();
+    
+    function loginClick() {
+        axiosBaseURL.get("/test_api/test/", {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then((response) => {
+            console.log(response)
 
-
-    const handleSignUpClick = (event) => {
-            axiosBaseURL.get("/test_api/test/", {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            }).then((response) => {
-                console.log(response) 
-             
-                for (var i = 0; i < response.data.length; i++) {
+            for (var i = 0; i < response.data.length; i++) {
                 console.log(response.data[i].username)
             }
 
-            }).catch(function (error) {
-                console.log(error)
-            });
+        }).catch(function (error) {
+            console.log(error)
+        });
     };
 
     return (
         <div className="d-flex flex-column align-items-center justify-content-center" style={{ height: '100vh', backgroundColor: 'white' }}>
-            <img src="canIcarrylogo.png" alt="Logo" style={{ width: '350px', height: '350px' }}/>
+            <img src="canIcarrylogo.png" alt="Logo" style={{ width: '350px', height: '350px' }} />
             <div className="col-md-4 col-lg-4">
                 <div className="card" style={{ backgroundColor: '#0B2565', color: 'white' }}>
                     <div className="card-body">
@@ -35,10 +37,10 @@ const Login = () => {
                             <div className="mb-3">
                                 <input type="password" className="form-control" placeholder="Password" />
                             </div>
-                            <button type="submit" className="btn w-100 mb-3" style={{ backgroundColor: '#BE2035', color: 'white' }}>Log In</button>
+                            <button type="submit" className="btn w-100 mb-3" style={{ backgroundColor: '#BE2035', color: 'white' }} onClick={loginClick}>Log In</button>
                             <div className="text-center">
                                 <p className="mb-2">Don't have an account?</p>
-                                <button type="button" className="btn btn-light w-100" onClick={handleSignUpClick}>
+                                <button type="button" className="btn btn-light w-100">
                                     Sign Up
                                 </button>
                             </div>
@@ -49,5 +51,4 @@ const Login = () => {
         </div>
     );
 };
-
 export default Login;
