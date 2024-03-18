@@ -38,7 +38,6 @@ const Disclaimer = () => {
           if (!isNaN(disclaimerArray[i].trim().charAt(0))) {
             header = disclaimerArray[i]
             disclaimerOBJ[header] = ""
-            console.log(disclaimerArray[i])
           }
           if (disclaimerArray[i].trim().includes("<li>")) {
             listItems.push(disclaimerArray[i].trim().replace("<li>", ""))
@@ -54,10 +53,8 @@ const Disclaimer = () => {
     else {
       setDisclaimerOBJ('sorry silly')
     }
-    console.log(disclaimerOBJ)
     setDisclaimerOBJ(disclaimerOBJ)
     setListItems(listItems)
-    console.log(listItems)
   }
 
   if (!disclaimerData && !disclaimerOBJ && !listItems) {
@@ -88,7 +85,7 @@ const Disclaimer = () => {
             We reserve the right to update or modify this disclaimer at any time without prior notice. Any changes will be effective immediately upon posting on the app. Users are encouraged to review this disclaimer regularly for updates.
           </p>
           <div className="mb-3">
-            <Link to="/main" className="btn btn-primary w-100" style={{ backgroundColor: '#BE2035', color: 'white' }}>
+            <Link to="/LocationServices" className="btn btn-primary w-100" style={{ backgroundColor: '#BE2035', color: 'white' }}>
               Agree
             </Link>
           </div>

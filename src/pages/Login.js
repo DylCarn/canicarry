@@ -40,7 +40,7 @@ const Login = () => {
                             <button type="submit" className="btn w-100 mb-3" style={{ backgroundColor: '#BE2035', color: 'white' }} onClick={loginClick}>Log In</button>
                             <div className="text-center">
                                 <p className="mb-2">Don't have an account?</p>
-                                <button type="button" className="btn btn-light w-100">
+                                <button to="/SignUp" type="button" className="btn btn-light w-100">
                                     Sign Up
                                 </button>
                             </div>

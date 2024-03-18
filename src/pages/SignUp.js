@@ -5,6 +5,8 @@ import { ThreeDots } from 'react-loader-spinner'
 import { toast, Bounce, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { loadingStyle } from '../constants/constantvariables';
+import { errorHandler } from '../helpers/errorHandler';
+import { stringCompare } from '../helpers/validators';
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -16,37 +18,9 @@ const SignUp = () => {
     const [isLoading, setIsLoading] = useState(false);
     const error = useRef()
 
-    const passwordObject = (pass1, pass2) => {
-        error.current = ""
-        if (pass1 !== pass2) {
-            error.current = "Passwords do not match"
-        }
-        else if (pass1.length <= 3) {
-            error.current = "Passwords is not long enough"
-        }
-        console.log(error.current)
-    };
-
-    const testTestie = (cheese) => {
-        console.log("The president needs our help")
-        setIsLoading(false)
-        toast.warn('Username Taken, plus ur dad does not like you', {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: true,
-            closeOnClick: false,
-            pauseOnHover: false,
-            draggable: false,
-            progress: undefined,
-            theme: "colored",
-            transition: Bounce,
-        });
-    };
-
     const handleSubmit = (event) => {
         event.preventDefault();
-        passwordObject(password, confirmPassword)
-        console.log(error.current)
+        error.current = stringCompare(password, confirmPassword)
         if (!error.current) {
 
             setIsLoading(true);
@@ -59,11 +33,9 @@ const SignUp = () => {
                 email: email,
 
             }).then((response) => {
-                console.log(response)
                 setResponse(response)
                 if (response.data.token != "" && response.status >= 200 && response.status <= 299) {
                     localStorage.setItem('token', response.data.token)
-                    console.log("works")
                     setIsLoading(false)
                     navigate('/Disclaimer');
                 }
@@ -80,7 +52,7 @@ const SignUp = () => {
                         transition: Bounce,
                     });
                 }
-            }).catch(testTestie)
+            }).catch(errorHandler)
 
         }
         else {
@@ -96,6 +68,7 @@ const SignUp = () => {
                 transition: Bounce,
             })
         }
+        setIsLoading(false);
     };
 
 
@@ -103,7 +76,6 @@ const SignUp = () => {
         <div className="d-flex flex-column align-items-center justify-content-center" style={{ height: '100vh', backgroundColor: 'white' }}>
             <ToastContainer
                 position="top-right"
-
                 hideProgressBar={false}
                 newestOnTop={false}
                 closeOnClick
@@ -129,7 +101,7 @@ const SignUp = () => {
                 <div>
 
                     <img src="canIcarrylogo.png" alt="Logo" style={{ width: '350px', height: '350px' }} />
-                    <div className="col-md-6 col-lg-4">
+                    <div>
                         <div className="card" style={{ backgroundColor: '#0B2565', color: 'white' }}>
                             <div className="card-body">
                                 <form onSubmit={handleSubmit}>
@@ -175,11 +147,14 @@ const SignUp = () => {
                                     <button type="submit" className="btn w-100 mb-3" style={{ backgroundColor: '#BE2035', color: 'white' }}>Sign Up</button>
                                 </form>
                             </div>
+            
                         </div>
                     </div>
+            
                 </div>
             }
         </div>
+        
     );
 };
 
