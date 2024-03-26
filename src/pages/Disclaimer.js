@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axiosBaseURL from '../http';
+import { toast, Bounce } from 'react-toastify';
 
 const Disclaimer = () => {
+  const navigate = useNavigate();
   const [disclaimerData, setDisclaimerData] = useState();
   const [disclaimerOBJ, setDisclaimerOBJ] = useState();
   const [listItems, setListItems] = useState();
@@ -57,9 +59,62 @@ const Disclaimer = () => {
     setListItems(listItems)
   }
 
-  if (!disclaimerData && !disclaimerOBJ && !listItems) {
-    return (<div>She Broke</div>)
+ const HandleAgreement = (event) =>{
+  let config = {
+    headers: {
+      'Authorization': 'Token ' + localStorage.getItem('token')
+    },
   }
+  let data = {
+      'id': disclaimerData.data.id,
+  }
+
+  if(event.target.name == "agree"){
+    axiosBaseURL.post("disclaimer_api/sign_disclaimer/", data, config,)
+    .then((response) => {
+          console.log(response)
+          if(response.data.is_signed){
+          //setIsLoading(false)
+          navigate('/LocationServices');
+          }
+
+          else {
+            toast.error('Error, please try again!', {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: true,
+              closeOnClick: false,
+              pauseOnHover: false,
+              draggable: false,
+              progress: undefined,
+              theme: "colored",
+              transition: Bounce,
+          });
+  
+          }
+        }).catch(function (error) {
+          console.log(error)
+        });
+
+  }
+  else{
+    toast.error('Disclaimer agreement is required to progress!', {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
+  });
+  }
+ }
+
+ if (!disclaimerData && !disclaimerOBJ && !listItems) {
+  return (<div>She Broke</div>)
+}
 
   return (
     <div className="container mt-5" style={smallText}>
@@ -85,12 +140,12 @@ const Disclaimer = () => {
             We reserve the right to update or modify this disclaimer at any time without prior notice. Any changes will be effective immediately upon posting on the app. Users are encouraged to review this disclaimer regularly for updates.
           </p>
           <div className="mb-3">
-            <Link to="/LocationServices" className="btn btn-primary w-100" style={{ backgroundColor: '#BE2035', color: 'white' }}>
-              Agree
-            </Link>
+          <button name="agree" className="btn btn-secondary w-100" onClick={HandleAgreement}>              
+          Agree
+          </button>
           </div>
           <div className="mb-3">
-            <button className="btn btn-secondary w-100" onClick={(e) => e.preventDefault()}>
+            <button name="disagree" className="btn btn-secondary w-100" onClick={HandleAgreement}>
               Disagree
             </button>
           </div>
