@@ -110,6 +110,12 @@ const Disclaimer = () => {
       transition: Bounce,
   });
   }
+  navigator.geolocation.getCurrentPosition(success)
+  function success(position) {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+  }
  }
 
  if (!disclaimerData && !disclaimerOBJ && !listItems) {

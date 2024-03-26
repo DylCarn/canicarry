@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { GoogleMap, MarkerF, InfoWindowF, Autocomplete, useLoadScript } from '@react-google-maps/api';
 import '../App.css';
 import {googleMapsLibrary, gunIcon} from '../constants/constantvariables';
@@ -14,15 +14,31 @@ const Main = () => {
     const [selected, setSelected] = useState({});
     const [searchResult, setSearchResult] = useState('');
     const [PlaceReply, setPlaceReply] = useState({});
-    const [defaultCenter, setDefaultCenter] = useState({ lat: 38.8807794, lng: -94.81837 }); //defaultCenter will be locationservices location
-    const {isLoaded} = useLoadScript({
+    const [defaultCenter, setDefaultCenter] = useState(); //defaultCenter will be locationservices location
+
+      const {isLoaded} = useLoadScript({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
         libraries: googleMapsLibrary
     });
     const [isUpvoteSelected, setUpvoteSelected] = useState(false);
     const [isDownvoteSelected, setDownvoteSelected] = useState(false);
     
+    function success(position) {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+    setDefaultCenter(
+        {lat: latitude,
+        lng: longitude
+        }
+    )  
+    }
     
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition(success)
+   }, []);
+
+
     const onSelect = item => {
         setSelected(item);
     }

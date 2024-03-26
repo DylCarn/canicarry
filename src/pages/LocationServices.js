@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 const LocationServices = () => {
   const [locationEnabled, setLocationEnabled] = useState(false);
   const navigate = useNavigate();
-
+  
   useEffect(() => {
     // Check if location services are enabled
     if (navigator.geolocation) {
